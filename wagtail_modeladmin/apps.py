@@ -1,7 +1,8 @@
 from django.apps import AppConfig
+from django.utils.translation import gettext_lazy as _
 
 
-class WagtailModeladminAppConfig(AppConfig):
-    label = "wagtail_modeladmin"
+class WagtailModelAdminAppConfig(AppConfig):
     name = "wagtail_modeladmin"
-    verbose_name = "Wagtail ModelAdmin"
+    label = "wagtailmodeladmin"
+    verbose_name = _("Wagtail ModelAdmin")
