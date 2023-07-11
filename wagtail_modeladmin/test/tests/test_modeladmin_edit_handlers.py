@@ -2,9 +2,10 @@ from unittest import mock
 
 from django.test import RequestFactory, TestCase
 from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
-from wagtail.contrib.modeladmin.views import CreateView
 from wagtail.test.modeladmintest.wagtail_hooks import PersonAdmin
 from wagtail.test.utils import WagtailTestUtils
+
+from wagtail_modeladmin.views import CreateView
 
 
 class TestExtractPanelDefinitionsFromModelAdmin(WagtailTestUtils, TestCase):
@@ -24,7 +25,7 @@ class TestExtractPanelDefinitionsFromModelAdmin(WagtailTestUtils, TestCase):
             ["first_name", "last_name", "phone_number"],
         )
 
-    @mock.patch("wagtail.contrib.modeladmin.views.ModelFormView.get_edit_handler")
+    @mock.patch("wagtail_modeladmin.views.ModelFormView.get_edit_handler")
     def test_model_form_view_edit_handler_called(
         self, mock_modelformview_get_edit_handler
     ):
@@ -32,7 +33,7 @@ class TestExtractPanelDefinitionsFromModelAdmin(WagtailTestUtils, TestCase):
         self.client.get("/admin/modeladmintest/person/create/")
         self.assertGreater(len(mock_modelformview_get_edit_handler.call_args_list), 0)
 
-    @mock.patch("wagtail.contrib.modeladmin.options.ModelAdmin.get_edit_handler")
+    @mock.patch("wagtail_modeladmin.options.ModelAdmin.get_edit_handler")
     def test_model_admin_edit_handler_called(self, mock_modeladmin_get_edit_handler):
         """loads the ``create`` view and verifies that modeladmin edit_handler is called"""
         # constructing the request in order to be able to assert it

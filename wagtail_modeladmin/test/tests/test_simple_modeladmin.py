@@ -11,7 +11,6 @@ from django.utils.timezone import make_aware
 from openpyxl import load_workbook
 from wagtail.admin.admin_url_finder import AdminURLFinder
 from wagtail.admin.panels import FieldPanel, TabbedInterface
-from wagtail.contrib.modeladmin.helpers.search import DjangoORMSearchHandler
 from wagtail.documents.models import Document
 from wagtail.documents.tests.utils import get_test_document_file
 from wagtail.images.models import Image
@@ -27,6 +26,8 @@ from wagtail.test.modeladmintest.models import (
 )
 from wagtail.test.modeladmintest.wagtail_hooks import BookModelAdmin, EventsAdminGroup
 from wagtail.test.utils import WagtailTestUtils
+
+from wagtail_modeladmin.helpers.search import DjangoORMSearchHandler
 
 
 class TestBookIndexView(WagtailTestUtils, TestCase):
@@ -300,7 +301,7 @@ class TestAuthorIndexView(WagtailTestUtils, TestCase):
         self.assertContains(response, test_html, html=True)
 
     @mock.patch(
-        "wagtail.contrib.modeladmin.helpers.permission.PermissionHelper.user_can_edit_obj",
+        "wagtail_modeladmin.helpers.permission.PermissionHelper.user_can_edit_obj",
         return_value=False,
     )
     def test_title_column_links_to_inspect_view_when_user_cannot_edit(self, *mocks):
@@ -312,11 +313,11 @@ class TestAuthorIndexView(WagtailTestUtils, TestCase):
         self.assertContains(response, test_html, html=True)
 
     @mock.patch(
-        "wagtail.contrib.modeladmin.helpers.permission.PermissionHelper.user_can_inspect_obj",
+        "wagtail_modeladmin.helpers.permission.PermissionHelper.user_can_inspect_obj",
         return_value=False,
     )
     @mock.patch(
-        "wagtail.contrib.modeladmin.helpers.permission.PermissionHelper.user_can_edit_obj",
+        "wagtail_modeladmin.helpers.permission.PermissionHelper.user_can_edit_obj",
         return_value=False,
     )
     def test_title_column_is_not_linked_when_user_cannot_edit_or_inspect(self, *mocks):
@@ -441,10 +442,10 @@ class TestCreateView(WagtailTestUtils, TestCase):
 
     def test_exclude_passed_to_extract_panel_definitions(self):
         path_to_form_fields_exclude_property = (
-            "wagtail.contrib.modeladmin.options.ModelAdmin.form_fields_exclude"
+            "wagtail_modeladmin.options.ModelAdmin.form_fields_exclude"
         )
         with mock.patch(
-            "wagtail.contrib.modeladmin.options.extract_panel_definitions_from_model_class"
+            "wagtail_modeladmin.options.extract_panel_definitions_from_model_class"
         ) as m:
             with mock.patch(
                 path_to_form_fields_exclude_property, new_callable=mock.PropertyMock
@@ -721,10 +722,10 @@ class TestEditView(WagtailTestUtils, TestCase):
 
     def test_exclude_passed_to_extract_panel_definitions(self):
         path_to_form_fields_exclude_property = (
-            "wagtail.contrib.modeladmin.options.ModelAdmin.form_fields_exclude"
+            "wagtail_modeladmin.options.ModelAdmin.form_fields_exclude"
         )
         with mock.patch(
-            "wagtail.contrib.modeladmin.options.extract_panel_definitions_from_model_class"
+            "wagtail_modeladmin.options.extract_panel_definitions_from_model_class"
         ) as m:
             with mock.patch(
                 path_to_form_fields_exclude_property, new_callable=mock.PropertyMock

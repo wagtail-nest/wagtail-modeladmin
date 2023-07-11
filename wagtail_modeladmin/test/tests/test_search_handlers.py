@@ -1,11 +1,12 @@
 from unittest.mock import patch
 
 from django.test import TestCase
-from wagtail.contrib.modeladmin.helpers import (
+from wagtail.test.modeladmintest.models import Book
+
+from wagtail_modeladmin.helpers import (
     DjangoORMSearchHandler,
     WagtailBackendSearchHandler,
 )
-from wagtail.test.modeladmintest.models import Book
 
 
 class FakeSearchBackend:
@@ -76,7 +77,7 @@ class TestSearchBackendHandler(TestCase):
         return Book.objects.all()
 
     @patch(
-        "wagtail.contrib.modeladmin.helpers.search.get_search_backend",
+        "wagtail_modeladmin.helpers.search.get_search_backend",
         return_value=FakeSearchBackend(),
     )
     def test_search_queryset_no_search_query(self, mocked_method):
@@ -88,7 +89,7 @@ class TestSearchBackendHandler(TestCase):
         self.assertIs(result, queryset)
 
     @patch(
-        "wagtail.contrib.modeladmin.helpers.search.get_search_backend",
+        "wagtail_modeladmin.helpers.search.get_search_backend",
         return_value=FakeSearchBackend(),
     )
     def test_search_queryset_no_search_fields(self, mocked_method):
@@ -110,7 +111,7 @@ class TestSearchBackendHandler(TestCase):
         )
 
     @patch(
-        "wagtail.contrib.modeladmin.helpers.search.get_search_backend",
+        "wagtail_modeladmin.helpers.search.get_search_backend",
         return_value=FakeSearchBackend(),
     )
     def test_search_queryset_with_search_fields(self, mocked_method):
@@ -133,7 +134,7 @@ class TestSearchBackendHandler(TestCase):
         )
 
     @patch(
-        "wagtail.contrib.modeladmin.helpers.search.get_search_backend",
+        "wagtail_modeladmin.helpers.search.get_search_backend",
         return_value=FakeSearchBackend(),
     )
     def test_search_queryset_preserve_order(self, get_search_backend):
