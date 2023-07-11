@@ -1,0 +1,69 @@
+ci:
+  autofix_prs: false
+
+default_language_version:
+  python: python3
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: check-toml
+      - id: check-yaml
+        args: ['--unsafe']
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/psf/black
+    rev: 23.3.0
+    hooks:
+      - id: black
+        language_version: python3
+        args: ['--target-version', 'py37']
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    # Ruff version.
+    rev: 'v0.0.265'
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    # prettier config is in prettier.config.js
+    rev: 'v2.7.1'
+    hooks:
+      - id: prettier
+        types_or: [css, scss, javascript, ts, tsx, json, yaml]
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    # eslint config is in .eslintrc.js
+    rev: v8.40.0
+    hooks:
+      - id: eslint
+        additional_dependencies:
+          - 'eslint@8.40.0'
+          - 'eslint-config-airbnb@19.0.4'
+          - 'eslint-plugin-import@2.27.5'
+          - 'eslint-plugin-jsx-a11y@6.7.1'
+          - 'eslint-plugin-react@7.32.2'
+          - 'eslint-plugin-react-hooks@4.6.0'
+          - '@typescript-eslint/eslint-plugin@5.59.2'
+          - '@typescript-eslint/parser@5.59.2'
+          - '@wagtail/eslint-config-wagtail@0.4.0'
+        files: \.(js|jsx|ts|tsx)$
+        types: [file]
+  - repo: https://github.com/thibaudcolas/pre-commit-stylelint
+    # stylelint config is in .stylelintrc.js
+    rev: v15.6.1
+    hooks:
+      - id: stylelint
+        files: \.(scss)$
+        additional_dependencies:
+          - 'stylelint@15.6.1'
+          - '@wagtail/stylelint-config-wagtail@0.6.0'
+  - repo: https://github.com/adamchainz/blacken-docs
+    rev: 1.13.0
+    hooks:
+      - id: blacken-docs
+        additional_dependencies: [black==23.3.0]

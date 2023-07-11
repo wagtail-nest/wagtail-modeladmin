@@ -1,0 +1,57 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "wagtail-modeladmin"
+authors = [{name = "Wagtail Core Team", email = "hello@wagtail.org"}]
+description = "Add any model in your project to the Wagtail admin. Formerly wagtail.contrib.modeladmin."
+readme = "README.md"
+license = {file = "LICENSE"}
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Framework :: Django",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Framework :: Wagtail",
+    "Framework :: Wagtail :: 5",
+]
+dynamic = ["version"]
+dependencies = [
+    "Wagtail>=5.0,<5.2"
+]
+[project.optional-dependencies]
+testing = [
+    "dj-database-url>=2.0.0",
+    "pre-commit<3.0"
+]
+
+[project.urls]
+Home = "https://github.com/wagtail/wagtail-modeladmin"
+
+[tool.flit.module]
+name = "wagtail_modeladmin"
+
+[tool.flit.sdist]
+exclude = [
+    "wagtail_modeladmin/static_src",
+    "wagtail_modeladmin/test",
+    "wagtail_modeladmin/static/wagtail_modeladmin/js/.gitignore",
+    "testmanage.py",
+    ".*",
+    "*.js",
+    "*.json",
+    "*.ini",
+    "*.yml"
+]
