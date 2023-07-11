@@ -1,1 +1,1 @@
-default_app_config = "wagtail_modeladmin.test.apps.WagtailModeladminTestAppConfig"
+default_app_config = "wagtail_modeladmin.test.apps.WagtailModelAdminTestAppConfig"

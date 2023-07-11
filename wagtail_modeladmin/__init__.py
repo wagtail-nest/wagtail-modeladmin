@@ -1,4 +1,4 @@
-default_app_config = "wagtail_modeladmin.apps.WagtailModeladminAppConfig"
+default_app_config = "wagtail_modeladmin.apps.WagtailModelAdminAppConfig"
 
 
 VERSION = (0, 1, 0)
