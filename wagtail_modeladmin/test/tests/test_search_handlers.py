@@ -1,12 +1,12 @@
 from unittest.mock import patch
 
 from django.test import TestCase
-from wagtail.test.modeladmintest.models import Book
 
 from wagtail_modeladmin.helpers import (
     DjangoORMSearchHandler,
     WagtailBackendSearchHandler,
 )
+from wagtail_modeladmin.test.models import Book
 
 
 class FakeSearchBackend:

@@ -178,7 +178,7 @@
       "show_in_menus": true,
       "live": true,
       "depth": 3,
-      "content_type": ["tests", "eventindex"],
+      "content_type": ["modeladmintest", "eventindex"],
       "path": "000100010001",
       "url_path": "/home/events/",
       "slug": "events"
@@ -186,7 +186,7 @@
   },
   {
     "pk": 3,
-    "model": "tests.eventindex",
+    "model": "modeladmintest.eventindex",
     "fields": {
       "intro": "Look at our lovely events."
     }
@@ -202,7 +202,7 @@
       "show_in_menus": true,
       "live": true,
       "depth": 4,
-      "content_type": ["tests", "eventpage"],
+      "content_type": ["modeladmintest", "eventpage"],
       "path": "0001000100010001",
       "url_path": "/home/events/christmas/",
       "slug": "christmas"
@@ -210,7 +210,7 @@
   },
   {
     "pk": 4,
-    "model": "tests.eventpage",
+    "model": "modeladmintest.eventpage",
     "fields": {
       "date_from": "2014-12-25",
       "audience": "public",

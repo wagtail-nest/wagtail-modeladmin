@@ -158,3 +158,5 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "test-media")
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "Wagtail ModelAdmin test site"
+WAGTAILDOCS_DOCUMENT_MODEL = "modeladmintest.CustomDocument"
+WAGTAILIMAGES_IMAGE_MODEL = "modeladmintest.CustomImage"

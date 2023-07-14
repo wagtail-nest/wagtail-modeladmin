@@ -11,23 +11,23 @@ from django.utils.timezone import make_aware
 from openpyxl import load_workbook
 from wagtail.admin.admin_url_finder import AdminURLFinder
 from wagtail.admin.panels import FieldPanel, TabbedInterface
-from wagtail.documents.models import Document
 from wagtail.documents.tests.utils import get_test_document_file
-from wagtail.images.models import Image
 from wagtail.images.tests.utils import get_test_image_file
 from wagtail.models import Locale, ModelLogEntry, Page
-from wagtail.test.modeladmintest.models import (
+from wagtail.test.utils import WagtailTestUtils
+
+from wagtail_modeladmin.helpers.search import DjangoORMSearchHandler
+from wagtail_modeladmin.test.models import (
     Author,
     Book,
+    CustomDocument,
+    CustomImage,
     Publisher,
     RelatedLink,
     Token,
     TranslatableBook,
 )
-from wagtail.test.modeladmintest.wagtail_hooks import BookModelAdmin, EventsAdminGroup
-from wagtail.test.utils import WagtailTestUtils
-
-from wagtail_modeladmin.helpers.search import DjangoORMSearchHandler
+from wagtail_modeladmin.test.wagtail_hooks import BookModelAdmin, EventsAdminGroup
 
 
 class TestBookIndexView(WagtailTestUtils, TestCase):
@@ -36,7 +36,7 @@ class TestBookIndexView(WagtailTestUtils, TestCase):
     def setUp(self):
         self.login()
 
-        img = Image.objects.create(
+        img = CustomImage.objects.create(
             title="LOTR cover",
             file=get_test_image_file(),
         )
@@ -230,7 +230,7 @@ class TestBookIndexViewSearch(WagtailTestUtils, TransactionTestCase):
     def setUp(self):
         self.login()
 
-        img = Image.objects.create(
+        img = CustomImage.objects.create(
             title="LOTR cover",
             file=get_test_image_file(),
         )
@@ -460,7 +460,7 @@ class TestCreateView(WagtailTestUtils, TestCase):
 
     def test_clean_form_once(self):
         with mock.patch(
-            "wagtail.test.modeladmintest.wagtail_hooks.PublisherModelAdminForm.clean"
+            "wagtail_modeladmin.test.wagtail_hooks.PublisherModelAdminForm.clean"
         ) as mock_form_clean:
             response = self.client.post(
                 "/admin/modeladmintest/publisher/create/", {"name": ""}
@@ -557,7 +557,7 @@ class TestInspectView(WagtailTestUtils, TestCase):
     def setUp(self):
         self.login()
 
-        img = Image.objects.create(
+        img = CustomImage.objects.create(
             title="LOTR cover",
             file=get_test_image_file(),
         )
@@ -613,7 +613,7 @@ class TestInspectView(WagtailTestUtils, TestCase):
         self.assertContains(response, "J. R. R. Tolkien", 1)
 
     def test_book_extract_document_html_escaping(self):
-        doc = Document.objects.create(
+        doc = CustomDocument.objects.create(
             title="Title with <script>alert('XSS')</script>",
             file=get_test_document_file(),
         )
@@ -740,7 +740,7 @@ class TestEditView(WagtailTestUtils, TestCase):
 
     def test_clean_form_once(self):
         with mock.patch(
-            "wagtail.test.modeladmintest.wagtail_hooks.PublisherModelAdminForm.clean"
+            "wagtail_modeladmin.test.wagtail_hooks.PublisherModelAdminForm.clean"
         ) as mock_form_clean:
             publisher = Publisher.objects.create(name="Sharper Collins")
 
