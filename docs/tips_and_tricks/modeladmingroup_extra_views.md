@@ -1,6 +1,6 @@
 # Adding non-ModelAdmin views to a `ModelAdminGroup`
 
-To add menu items to a `ModelAdminGroup` that are not managed by ModelAdmin, you can override the `get_submenu_items` method. For example, to add the calendar view described in [](../../../../extending/admin_views) alongside an `EventAdmin` modeladmin, you would do the following (in place of registering it through the `register_admin_menu_item` hook):
+To add menu items to a `ModelAdminGroup` that are not managed by ModelAdmin, you can override the `get_submenu_items` method. For example, to add the calendar view described in {doc}`wagtail:extending/admin_views` alongside an `EventAdmin` modeladmin, you would do the following (in place of registering it through the `register_admin_menu_item` hook):
 
 ```{code-block} python
 from django.urls import reverse
