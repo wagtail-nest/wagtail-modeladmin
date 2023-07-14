@@ -4,26 +4,33 @@ Add any model in your project to the Wagtail admin. Formerly wagtail.contrib.mod
 
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![PyPI version](https://badge.fury.io/py/wagtail-modeladmin.svg)](https://badge.fury.io/py/wagtail-modeladmin)
-[![ModelAdmin CI](https://github.com/wagtail/wagtail-modeladmin/actions/workflows/test.yml/badge.svg)](https://github.com/wagtail/wagtail-modeladmin/actions/workflows/test.yml)
+[![ModelAdmin CI](https://github.com/wagtail-nest/wagtail-modeladmin/actions/workflows/test.yml/badge.svg)](https://github.com/wagtail-nest/wagtail-modeladmin/actions/workflows/test.yml)
 
 ## Links
 
-- [Documentation](https://github.com/wagtail/wagtail-modeladmin/blob/main/README.md)
-- [Changelog](https://github.com/wagtail/wagtail-modeladmin/blob/main/CHANGELOG.md)
-- [Contributing](https://github.com/wagtail/wagtail-modeladmin/blob/main/CHANGELOG.md)
-- [Discussions](https://github.com/wagtail/wagtail-modeladmin/discussions)
-- [Security](https://github.com/wagtail/wagtail-modeladmin/security)
+- [Documentation](https://github.com/wagtail-nest/wagtail-modeladmin/blob/main/README.md)
+- [Changelog](https://github.com/wagtail-nest/wagtail-modeladmin/blob/main/CHANGELOG.md)
+- [Contributing](https://github.com/wagtail-nest/wagtail-modeladmin/blob/main/CHANGELOG.md)
+- [Discussions](https://github.com/wagtail-nest/wagtail-modeladmin/discussions)
+- [Security](https://github.com/wagtail-nest/wagtail-modeladmin/security)
 
 ## Supported versions
 
-- Python ...
-- Django ...
-- Wagtail ...
+- Python 3.8, 3.9, 3.10, 3.11
+- Django 3.2, 4.1, 4.2
+- Wagtail 5.0, 5.1
 
 ## Installation
 
 - `python -m pip install wagtail-modeladmin`
-- ...
+- Add `wagtail_modeladmin` to your `INSTALLED_APPS` setting.
+  ```python
+  INSTALLED_APPS = [
+      # ...
+      "wagtail_modeladmin",
+      # ...
+  ]
+  ```
 
 ## Contributing
 
@@ -32,7 +39,7 @@ Add any model in your project to the Wagtail admin. Formerly wagtail.contrib.mod
 To make changes to this project, first clone this repository:
 
 ```sh
-git clone https://github.com/wagtail/wagtail-modeladmin.git
+git clone https://github.com/wagtail-nest/wagtail-modeladmin.git
 cd wagtail-modeladmin
 ```
 

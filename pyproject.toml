@@ -38,7 +38,7 @@ testing = [
 ]
 
 [project.urls]
-Home = "https://github.com/wagtail/wagtail-modeladmin"
+Home = "https://github.com/wagtail-nest/wagtail-modeladmin"
 
 [tool.flit.module]
 name = "wagtail_modeladmin"
