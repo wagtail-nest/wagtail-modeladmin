@@ -1,6 +1,5 @@
 from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
 from wagtail.models import Page
-from wagtail.test.testapp.models import BusinessChild, EventPage, SingleEventPage
 
 from wagtail_modeladmin.helpers import WagtailBackendSearchHandler
 from wagtail_modeladmin.options import (
@@ -15,12 +14,15 @@ from .forms import PublisherModelAdminForm
 from .models import (
     Author,
     Book,
+    BusinessChild,
     Contributor,
     Enemy,
+    EventPage,
     Friend,
     Person,
     Publisher,
     RelatedLink,
+    SingleEventPage,
     Token,
     TranslatableBook,
     VenuePage,
