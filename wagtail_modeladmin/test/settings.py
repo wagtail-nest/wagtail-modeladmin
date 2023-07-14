@@ -42,8 +42,10 @@ INSTALLED_APPS = [
     "wagtail.documents",
     "wagtail.images",
     "wagtail.search",
+    "wagtail.locales",
     "wagtail.admin",
     "wagtail.api.v2",
+    "wagtail.contrib.simple_translation",
     "wagtail.contrib.routable_page",
     "wagtail.contrib.styleguide",
     "wagtail.sites",
@@ -64,6 +66,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -160,3 +163,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "test-media")
 WAGTAIL_SITE_NAME = "Wagtail ModelAdmin test site"
 WAGTAILDOCS_DOCUMENT_MODEL = "modeladmintest.CustomDocument"
 WAGTAILIMAGES_IMAGE_MODEL = "modeladmintest.CustomImage"
+WAGTAILADMIN_BASE_URL = "http://testserver"
+WAGTAIL_CONTENT_LANGUAGES = [
+    ("en", ("English")),
+    ("fr", ("French")),
+]
