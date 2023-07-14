@@ -126,8 +126,8 @@ For all of the views offered by `ModelAdmin`, the class provides an attribute th
 For example, if you'd like to create your own view class and use it for the `IndexView`, you would do the following:
 
 ```python
-from wagtail.contrib.modeladmin.views import IndexView
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.views import IndexView
+from wagtail_modeladmin.options import ModelAdmin
 from .models import MyModel
 
 
@@ -149,7 +149,7 @@ You can also use the url_helper to easily reverse URLs for any ModelAdmin see []
 
 ## Overriding helper classes
 
-While 'view classes' are responsible for a lot of the work, there are also a number of other tasks that `modeladmin` must do regularly, that need to be handled in a consistent way, and in a number of different places. These tasks are designated to a set of simple classes (in `modeladmin`, these are termed 'helper' classes) and can be found in `wagtail.contrib.modeladmin.helpers`.
+While 'view classes' are responsible for a lot of the work, there are also a number of other tasks that `modeladmin` must do regularly, that need to be handled in a consistent way, and in a number of different places. These tasks are designated to a set of simple classes (in `modeladmin`, these are termed 'helper' classes) and can be found in `wagtail_modeladmin.helpers`.
 
 If you ever intend to write and use your own custom views with `modeladmin`, you should familiarise yourself with these helpers, as they are made available to views via the `modeladmin.views.WMABaseView` view.
 
@@ -172,8 +172,8 @@ If you find that the above helper classes don't work for your needs, you can eas
 Once your class is defined, set the `url_helper_class` attribute on your `ModelAdmin` class to use your custom URLHelper, like so:
 
 ```python
-from wagtail.contrib.modeladmin.helpers import AdminURLHelper
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.helpers import AdminURLHelper
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from .models import MyModel
 
 
@@ -210,8 +210,8 @@ By default, the `modeladmin.helpers.permission.PagePermissionHelper` class is us
 If you find that the above helper classes don't work for your needs, you can easily create your own helper class, by sub-classing `PermissionHelper` (or `PagePermissionHelper` if your model extends Wagtail's `Page` model), and making any necessary additions/overrides. Once defined, you set the `permission_helper_class` attribute on your `ModelAdmin` class to use your custom class instead of the default, like so:
 
 ```python
-from wagtail.contrib.modeladmin.helpers import PermissionHelper
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.helpers import PermissionHelper
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from .models import MyModel
 
 
@@ -248,8 +248,8 @@ By default, the `modeladmin.helpers.button.PageButtonHelper` class is used when 
 If you wish to add or change buttons for your model's IndexView, you'll need to create your own button helper class by sub-classing `ButtonHelper` or `PageButtonHelper` (if your model extend's Wagtail's `Page` model), and make any necessary additions/overrides. Once defined, you set the `button_helper_class` attribute on your `ModelAdmin` class to use your custom class instead of the default, like so:
 
 ```python
-from wagtail.contrib.modeladmin.helpers import ButtonHelper
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.helpers import ButtonHelper
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from .models import MyModel
 
 

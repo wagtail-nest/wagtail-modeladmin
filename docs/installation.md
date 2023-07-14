@@ -6,11 +6,11 @@ Install the package from PyPI:
 python -m pip install wagtail-modeladmin
 ```
 
-Add `wagtail.contrib.modeladmin` to your `INSTALLED_APPS`:
+Add `wagtail_modeladmin` to your `INSTALLED_APPS`:
 
 ```python
 INSTALLED_APPS = [
     ...,
-    "wagtail.contrib.modeladmin",
+    "wagtail_modeladmin",
 ]
 ```

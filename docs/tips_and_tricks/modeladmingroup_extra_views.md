@@ -4,7 +4,7 @@ To add menu items to a `ModelAdminGroup` that are not managed by ModelAdmin, you
 
 ```{code-block} python
 from django.urls import reverse
-from wagtail.contrib.modeladmin.options import (
+from wagtail_modeladmin.options import (
     ModelAdmin,
     modeladmin_register,
     ModelAdminGroup,

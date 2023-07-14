@@ -37,7 +37,7 @@ This lets you use Wagtail-specific layouts in an otherwise traditional Django mo
 `wagtail_hooks.py` in your app directory would look something like this:
 
 ```python
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from .models import Book
 
 
@@ -72,7 +72,7 @@ Assume we've defined `Book`, `Author`, and `Genre` models in `models.py`.
 `wagtail_hooks.py` in your app directory would look something like this:
 
 ```python
-from wagtail.contrib.modeladmin.options import (
+from wagtail_modeladmin.options import (
     ModelAdmin,
     ModelAdminGroup,
     modeladmin_register,

@@ -37,7 +37,7 @@ to allow a single author to be specified for each post.
 # file: wagtail_hooks.py
 
 from wagtail.admin.widgets import PageListingButton
-from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register
+from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from wagtail import hooks
 
 # Author & BlogPage model not shown in this example

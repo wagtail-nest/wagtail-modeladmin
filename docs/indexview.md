@@ -26,7 +26,7 @@ You have three possible values that can be used in `list_display`:
 -   A field of the model. For example:
 
     ```python
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
     from .models import Person
 
 
@@ -38,7 +38,7 @@ You have three possible values that can be used in `list_display`:
 -   The name of a custom method on your `ModelAdmin` class, that accepts a single parameter for the model instance. For example:
 
     ```python
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
     from .models import Person
 
 
@@ -56,7 +56,7 @@ You have three possible values that can be used in `list_display`:
 
     ```python
     from django.db import models
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
 
 
     class Person(models.Model):
@@ -83,7 +83,7 @@ A few special cases to note about `list_display`:
     ```python
     from django.db import models
     from django.utils.html import format_html
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
 
 
     class Person(models.Model):
@@ -108,7 +108,7 @@ A few special cases to note about `list_display`:
 -   If the value of a field is `None`, an empty string, or an iterable without elements, Wagtail will display a dash (-) for that column. You can override this by setting `empty_value_display` on your `ModelAdmin` class. For example:
 
     ```python
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
 
 
     class PersonAdmin(ModelAdmin):
@@ -120,7 +120,7 @@ A few special cases to note about `list_display`:
 
     ```python
     from django.db import models
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
 
 
     class Person(models.Model):
@@ -152,7 +152,7 @@ A few special cases to note about `list_display`:
     ```python
     from django.db import models
     from django.utils.html import format_html
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
 
 
     class Person(models.Model):
@@ -210,7 +210,7 @@ A few special cases to note about `list_display`:
 
     ```python
     from django.db import models
-    from wagtail.contrib.modeladmin.options import ModelAdmin
+    from wagtail_modeladmin.options import ModelAdmin
 
 
     class Person(models.Model):
@@ -280,14 +280,14 @@ Searching is handled via Django's QuerySet API by default, see [](modeladmin_sea
 
 ## `ModelAdmin.search_handler_class`
 
-**Expected value**: A subclass of `wagtail.contrib.modeladmin.helpers.search.BaseSearchHandler`
+**Expected value**: A subclass of `wagtail_modeladmin.helpers.search.BaseSearchHandler`
 
 The default value is `DjangoORMSearchHandler`, which uses the Django ORM to perform lookups on the fields specified by `search_fields`.
 
 If you would prefer to use the built-in Wagtail search backend to search your models, you can use the `WagtailBackendSearchHandler` class instead. For example:
 
 ```python
-from wagtail.contrib.modeladmin.helpers import WagtailBackendSearchHandler
+from wagtail_modeladmin.helpers import WagtailBackendSearchHandler
 
 from .models import Person
 
@@ -320,7 +320,7 @@ Be sure to test things thoroughly in a development environment (ideally using th
 For example, to override the `WagtailBackendSearchHandler` default operator you could do the following:
 
 ```python
-from wagtail.contrib.modeladmin.helpers import WagtailBackendSearchHandler
+from wagtail_modeladmin.helpers import WagtailBackendSearchHandler
 from wagtail.search.utils import OR
 
 from .models import IndexedModel
@@ -363,7 +363,7 @@ For example:
 
 ```python
 from django.db import models
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.options import ModelAdmin
 
 
 class Person(models.Model):
@@ -397,7 +397,7 @@ For example, if you wanted to add some additional class names based on field val
 ```python
 from decimal import Decimal
 from django.db import models
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.options import ModelAdmin
 
 
 class BankAccount(models.Model):
@@ -436,7 +436,7 @@ depending on the row's value, you could do something like:
 ```python
 from decimal import Decimal
 from django.db import models
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.options import ModelAdmin
 
 
 class BankAccount(models.Model):
@@ -477,7 +477,7 @@ help give the value more context:
 
 ```python
 from django.db import models
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.options import ModelAdmin
 
 
 class Person(models.Model):
@@ -507,7 +507,7 @@ Or you might like to add one or more data attributes to help implement some kind
 
 ```python
 from django.db import models
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.options import ModelAdmin
 
 
 class Event(models.Model):
@@ -535,15 +535,15 @@ class EventAdmin(ModelAdmin):
 
 (modeladmin_thumbnailmixin)=
 
-## `wagtail.contrib.modeladmin.mixins.ThumbnailMixin`
+## `wagtail_modeladmin.mixins.ThumbnailMixin`
 
 If you're using `wagtailimages.Image` to define an image for each item in your model, `ThumbnailMixin` can help you add thumbnail versions of that image to each row in `IndexView`. To use it, simply extend `ThumbnailMixin`
 as well as `ModelAdmin` when defining your `ModelAdmin` class, and change a few attributes to change the thumbnail to your liking, like so:
 
 ```python
 from django.db import models
-from wagtail.contrib.modeladmin.mixins import ThumbnailMixin
-from wagtail.contrib.modeladmin.options import ModelAdmin
+from wagtail_modeladmin.mixins import ThumbnailMixin
+from wagtail_modeladmin.options import ModelAdmin
 
 
 class Person(models.Model):
