@@ -318,6 +318,10 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
     # as of Django 5.0 - see https://github.com/django/django/pull/16495
     add_facets = False
 
+    # Backported from
+    # https://github.com/wagtail/wagtail/commit/45ab2630ef8d7ee6ead54dcb2939945508995bac
+    export_buttons_template_name = "modeladmin/includes/export_buttons.html"
+
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         # Only continue if logged in user has list permission
