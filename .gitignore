@@ -1,5 +1,6 @@
 __pycache__/
 *.py[co]
+/docs/_build/
 /build
 /dist
 /wagtail_modeladmin.egg-info
