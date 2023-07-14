@@ -9,6 +9,7 @@ from django.test import TestCase, TransactionTestCase
 from django.test.utils import override_settings
 from django.utils.timezone import make_aware
 from openpyxl import load_workbook
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.admin_url_finder import AdminURLFinder
 from wagtail.admin.panels import FieldPanel, TabbedInterface
 from wagtail.documents.tests.utils import get_test_document_file
@@ -511,14 +512,26 @@ class TestTranslatableCreateView(WagtailTestUtils, TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Check that the locale select exists and is set correctly
-        self.assertRegex(
-            response.content.decode(),
-            r"data-locale-selector[^<]+<button[^<]+<svg[^<]+<use[^<]+<\/use[^<]+<\/svg[^<]+French",
-        )
+        if WAGTAIL_VERSION >= (5, 1):
+            self.assertRegex(
+                response.content.decode(),
+                r"data-locale-selector[^<]+<button[^<]+<svg[^<]+<use[^<]+<\/use[^<]+<\/svg[^<]+French",
+            )
 
-        # Check that the other locale link is right
-        expected = '<a href="/admin/modeladmintest/translatablebook/create/?locale=en" data-locale-selector-link>'
-        self.assertIn(expected, response.content.decode())
+            # Check that the other locale link is right
+            expected = '<a href="/admin/modeladmintest/translatablebook/create/?locale=en" data-locale-selector-link>'
+            self.assertIn(expected, response.content.decode())
+
+        else:
+            expected = '<a href="javascript:void(0)" aria-label="French" class="c-dropdown__button u-btn-current w-no-underline">'
+            self.assertContains(response, expected)
+
+            # Check that the other locale link is right
+            expected = """
+            <a href="/admin/modeladmintest/translatablebook/create/?locale=en" aria-label="English" class="u-link is-live w-no-underline">
+                English
+            </a>"""
+            self.assertContains(response, expected, html=True)
 
 
 class TestRevisableCreateView(WagtailTestUtils, TestCase):
@@ -801,12 +814,20 @@ class TestTranslatableBookEditView(WagtailTestUtils, TestCase):
         response = self.get(tbook.id)
         self.assertEqual(response.status_code, 200)
 
-        # Check the locale switcher is there
-        expected = """
-        <a href="/admin/modeladmintest/translatablebook/edit/1/?locale=en" data-locale-selector-link>
-            English
-        </a>"""
-        self.assertContains(response, expected, html=True)
+        if WAGTAIL_VERSION >= (5, 1):
+            # Check the locale switcher is there
+            expected = """
+            <a href="/admin/modeladmintest/translatablebook/edit/1/?locale=en" data-locale-selector-link>
+                English
+            </a>"""
+            self.assertContains(response, expected, html=True)
+        else:
+            # Check the locale switcher is there
+            expected = """
+            <a href="/admin/modeladmintest/translatablebook/edit/1/?locale=en" aria-label="English" class="u-link is-live w-no-underline">
+                English
+            </a>"""
+            self.assertContains(response, expected, html=True)
 
 
 class TestRevisableEditView(WagtailTestUtils, TestCase):
