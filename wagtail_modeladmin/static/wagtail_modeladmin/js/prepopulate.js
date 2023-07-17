@@ -1,4 +1,4 @@
-/* global URLify */
+/* global URLify jQuery */
 (function ($) {
   $.fn.prepopulate = function (dependencies, maxLength, allowUnicode) {
     /*

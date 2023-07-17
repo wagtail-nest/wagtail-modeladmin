@@ -35,7 +35,7 @@ repos:
     rev: 'v2.7.1'
     hooks:
       - id: prettier
-        types_or: [css, scss, javascript, ts, tsx, json, yaml]
+        types_or: [css, scss, javascript, json, yaml]
   - repo: https://github.com/pre-commit/mirrors-eslint
     # eslint config is in .eslintrc.js
     rev: v8.40.0
@@ -43,15 +43,15 @@ repos:
       - id: eslint
         additional_dependencies:
           - 'eslint@8.40.0'
+          # These are required by @wagtail/eslint-config-wagtail
+          # even if we don't use react
           - 'eslint-config-airbnb@19.0.4'
           - 'eslint-plugin-import@2.27.5'
           - 'eslint-plugin-jsx-a11y@6.7.1'
           - 'eslint-plugin-react@7.32.2'
           - 'eslint-plugin-react-hooks@4.6.0'
-          - '@typescript-eslint/eslint-plugin@5.59.2'
-          - '@typescript-eslint/parser@5.59.2'
           - '@wagtail/eslint-config-wagtail@0.4.0'
-        files: \.(js|jsx|ts|tsx)$
+        files: \.(js)$
         types: [file]
   - repo: https://github.com/thibaudcolas/pre-commit-stylelint
     # stylelint config is in .stylelintrc.js
