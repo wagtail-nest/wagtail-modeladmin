@@ -11,7 +11,11 @@ from django.utils.timezone import make_aware
 from openpyxl import load_workbook
 from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.admin_url_finder import AdminURLFinder
-from wagtail.admin.panels import FieldPanel, TabbedInterface
+from wagtail.admin.panels import (
+    FieldPanel,
+    TabbedInterface,
+    extract_panel_definitions_from_model_class,
+)
 from wagtail.documents.tests.utils import get_test_document_file
 from wagtail.images.tests.utils import get_test_image_file
 from wagtail.models import Locale, ModelLogEntry, Page
@@ -446,7 +450,8 @@ class TestCreateView(WagtailTestUtils, TestCase):
             "wagtail_modeladmin.options.ModelAdmin.form_fields_exclude"
         )
         with mock.patch(
-            "wagtail_modeladmin.options.extract_panel_definitions_from_model_class"
+            "wagtail_modeladmin.options.extract_panel_definitions_from_model_class",
+            wraps=extract_panel_definitions_from_model_class,
         ) as m:
             with mock.patch(
                 path_to_form_fields_exclude_property, new_callable=mock.PropertyMock
@@ -738,7 +743,8 @@ class TestEditView(WagtailTestUtils, TestCase):
             "wagtail_modeladmin.options.ModelAdmin.form_fields_exclude"
         )
         with mock.patch(
-            "wagtail_modeladmin.options.extract_panel_definitions_from_model_class"
+            "wagtail_modeladmin.options.extract_panel_definitions_from_model_class",
+            wraps=extract_panel_definitions_from_model_class,
         ) as m:
             with mock.patch(
                 path_to_form_fields_exclude_property, new_callable=mock.PropertyMock
