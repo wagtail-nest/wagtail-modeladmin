@@ -8,7 +8,7 @@ Add any model in your project to the Wagtail admin. Formerly wagtail.contrib.mod
 
 ## Links
 
-- [Documentation](https://github.com/wagtail-nest/wagtail-modeladmin/blob/main/README.md)
+- [Documentation](https://wagtail-modeladmin.readthedocs.io)
 - [Changelog](https://github.com/wagtail-nest/wagtail-modeladmin/blob/main/CHANGELOG.md)
 - [Contributing](https://github.com/wagtail-nest/wagtail-modeladmin/blob/main/CHANGELOG.md)
 - [Discussions](https://github.com/wagtail-nest/wagtail-modeladmin/discussions)
