@@ -1,6 +1,6 @@
 # Wagtail ModelAdmin
 
-Add any model in your project to the Wagtail admin. Formerly wagtail.contrib.modeladmin.
+Add any model in your project to the Wagtail admin. Formerly `wagtail.contrib.modeladmin`.
 
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![PyPI version](https://badge.fury.io/py/wagtail-modeladmin.svg)](https://badge.fury.io/py/wagtail-modeladmin)
