@@ -12,6 +12,11 @@ permissions:
 jobs:
   build_and_publish:
     runs-on: ubuntu-latest
+    environment:
+      name: publish
+      url: https://pypi.org/project/wagtail-modeladmin
+    permissions:
+      id-token: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -32,8 +37,4 @@ jobs:
         run: python -m flit build
 
       - name: Publish to PyPI
-        env:
-          FLIT_USERNAME: '__token__'
-          FLIT_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-          FLIT_INDEX_URL: https://upload.pypi.org/legacy/
-        run: python -m flit publish
+        uses: pypa/gh-action-pypi-publish@release/v1
