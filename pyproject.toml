@@ -27,6 +27,7 @@ classifiers = [
     "Framework :: Wagtail :: 5",
 ]
 dynamic = ["version"]
+requires-python = ">=3.8"
 dependencies = [
     "Wagtail>=5.0"
 ]
