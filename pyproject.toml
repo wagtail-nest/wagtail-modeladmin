@@ -28,7 +28,7 @@ classifiers = [
 ]
 dynamic = ["version"]
 dependencies = [
-    "Wagtail>=5.0,<5.2"
+    "Wagtail>=5.0"
 ]
 [project.optional-dependencies]
 testing = [
