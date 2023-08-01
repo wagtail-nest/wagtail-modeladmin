@@ -1,10 +1,12 @@
 # Wagtail ModelAdmin
 
-Add any model in your project to the Wagtail admin. Formerly `wagtail.contrib.modeladmin`.
-
 [![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 [![PyPI version](https://badge.fury.io/py/wagtail-modeladmin.svg)](https://badge.fury.io/py/wagtail-modeladmin)
 [![ModelAdmin CI](https://github.com/wagtail-nest/wagtail-modeladmin/actions/workflows/test.yml/badge.svg)](https://github.com/wagtail-nest/wagtail-modeladmin/actions/workflows/test.yml)
+
+Add any model in your project to the Wagtail admin. Formerly `wagtail.contrib.modeladmin`.
+
+This package is in maintenance mode and will not receive new features. Consider [migrating to Snippets](https://docs.wagtail.org/en/stable/reference/contrib/modeladmin/migrating_to_snippets.html) and opening new feature requests in the [Wagtail issue tracker](https://github.com/wagtail/wagtail/issues).
 
 ## Links
 
