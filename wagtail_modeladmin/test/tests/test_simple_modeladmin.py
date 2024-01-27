@@ -692,7 +692,14 @@ class TestEditView(WagtailTestUtils, TestCase):
         self.assertContains(response, "The Lord of the Rings")
 
         # "Last updated" timestamp should be present
-        self.assertContains(response, 'data-tippy-content="Sept. 30, 2021, 10:01 a.m."')
+        if WAGTAIL_VERSION >= (6, 0):
+            self.assertContains(
+                response, 'data-w-tooltip-content-value="Sept. 30, 2021, 10:01 a.m."'
+            )
+        else:
+            self.assertContains(
+                response, 'data-tippy-content="Sept. 30, 2021, 10:01 a.m."'
+            )
         # History link should be present
         self.assertContains(response, 'href="/admin/modeladmintest/book/history/1/"')
 
@@ -1101,10 +1108,16 @@ class TestHistoryView(WagtailTestUtils, TestCase):
         response = self.client.get("/admin/modeladmintest/book/history/1/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<td>Created</td>", html=True)
-        self.assertContains(
-            response,
-            'data-tippy-content="Sept. 30, 2021, 10:01 a.m."',
-        )
+        if WAGTAIL_VERSION >= (6, 0):
+            self.assertContains(
+                response,
+                'data-w-tooltip-content-value="Sept. 30, 2021, 10:01 a.m."',
+            )
+        else:
+            self.assertContains(
+                response,
+                'data-tippy-content="Sept. 30, 2021, 10:01 a.m."',
+            )
 
 
 class TestQuoting(WagtailTestUtils, TestCase):
