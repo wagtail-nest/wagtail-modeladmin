@@ -16,6 +16,7 @@ from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
+from wagtail.admin.templatetags.wagtailadmin_tags import BlockInclusionNode
 
 register = Library()
 
@@ -246,3 +247,16 @@ def prepopulated_slugs(context):
         }
     )
     return context
+
+
+class RawFormattedFieldNode(BlockInclusionNode):
+    """
+    Duplicate of wagtailadmin_tags {% rawformattedfield %}...{% endrawformattedfield %} tag to allow
+    consistent use across Wagtail 5.x and 6.x; in 5.x this was {% field %}...{% endfield %}.
+    """
+
+    content_var = "rendered_field"
+    template = "wagtailadmin/shared/field.html"
+
+
+register.tag("rawformattedfield", RawFormattedFieldNode.handle)
