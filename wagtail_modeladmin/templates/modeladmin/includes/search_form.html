@@ -1,10 +1,10 @@
-{% load i18n wagtailadmin_tags %}
+{% load i18n modeladmin_tags %}
 {% if show_search %}
     <form id="changelist-search" class="col search-form" action="{{ view.index_url }}" method="get">
         {% trans 'Search for' as label_text %}
-        {% field label_text=label_text sr_only_label=True id_for_label="id_q" icon="search" classname="w-mb-0" %}
+        {% rawformattedfield label_text=label_text sr_only_label=True id_for_label="id_q" icon="search" classname="w-mb-0" %}
             <input id="id_q" name="{{ search_var }}" value="{{ view.query }}" placeholder="{% blocktrans trimmed with view.verbose_name_plural|lower as name %}Search {{ name }}{% endblocktrans %}" type="text">
-        {% endfield %}
+        {% endrawformattedfield %}
         <button type="submit" class="w-sr-only">{% trans 'Search' %}</button>
         {# Keep all parameters from the query string (e.g. filter state). #}
         {% for name, value in view.params.items %}
