@@ -229,6 +229,10 @@ class TestBookIndexView(WagtailTestUtils, TestCase):
         # There are four books in the test data
         self.assertEqual(response.context["result_count"], 4)
 
+    def test_export_buttons(self):
+        response = self.get()
+        self.assertTemplateUsed(response, "wagtailadmin/shared/export_buttons.html")
+
 
 class TestBookIndexViewSearch(WagtailTestUtils, TransactionTestCase):
     fixtures = ["modeladmintest_test.json"]

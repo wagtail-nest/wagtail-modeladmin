@@ -22,15 +22,11 @@
         {% fragment as description %}{% include 'modeladmin/includes/result_count.html' %}{% endfragment %}
         {% fragment as extra_actions %}
             {% block header_extra %}
-                {% if view.list_export or user_can_create %}
-                    <div class="actionbutton">
-                        {% if user_can_create %}
-                            {% include 'modeladmin/includes/button.html' with button=view.button_helper.add_button %}
-                        {% endif %}
-                        {% if view.list_export %}
-                            {% include view.export_buttons_template_name %}
-                        {% endif %}
-                    </div>
+                {% if view.list_export %}
+                    {% include view.export_buttons_template_name %}
+                {% endif %}
+                {% if user_can_create %}
+                    {% include 'modeladmin/includes/button.html' with button=view.button_helper.add_button %}
                 {% endif %}
             {% endblock %}
         {% endfragment %}
