@@ -2,7 +2,6 @@ from django.contrib.auth import get_permission_codename
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.utils.functional import cached_property
-from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.models import Page
 
 
@@ -135,22 +134,13 @@ class PagePermissionHelper(PermissionHelper):
         else:
             pages_where_user_can_add = Page.objects.none()
 
-            if WAGTAIL_VERSION >= (5, 1):
-                from wagtail.permission_policies.pages import PagePermissionPolicy
+            from wagtail.permission_policies.pages import PagePermissionPolicy
 
-                perms = {
-                    perm
-                    for perm in PagePermissionPolicy().get_cached_permissions_for_user(
-                        user
-                    )
-                    if perm.permission.codename == "add_page"
-                }
-            else:
-                from wagtail.models import UserPagePermissionsProxy
-
-                perms = UserPagePermissionsProxy(user).permissions.filter(
-                    permission_type="add"
-                )
+            perms = {
+                perm
+                for perm in PagePermissionPolicy().get_cached_permissions_for_user(user)
+                if perm.permission.codename == "add_page"
+            }
 
             for perm in perms:
                 # user has add permission on any subpage of perm.page

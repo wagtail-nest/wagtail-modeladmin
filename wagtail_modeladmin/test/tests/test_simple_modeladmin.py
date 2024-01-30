@@ -10,7 +10,6 @@ from django.test import TestCase, TransactionTestCase
 from django.test.utils import override_settings
 from django.utils.timezone import make_aware
 from openpyxl import load_workbook
-from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.admin_url_finder import AdminURLFinder
 from wagtail.admin.panels import (
     FieldPanel,
@@ -532,26 +531,14 @@ class TestTranslatableCreateView(WagtailTestUtils, TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Check that the locale select exists and is set correctly
-        if WAGTAIL_VERSION >= (5, 1):
-            self.assertRegex(
-                response.content.decode(),
-                r"data-locale-selector[^<]+<button[^<]+<svg[^<]+<use[^<]+<\/use[^<]+<\/svg[^<]+French",
-            )
+        self.assertRegex(
+            response.content.decode(),
+            r"data-locale-selector[^<]+<button[^<]+<svg[^<]+<use[^<]+<\/use[^<]+<\/svg[^<]+French",
+        )
 
-            # Check that the other locale link is right
-            expected = '<a href="/admin/modeladmintest/translatablebook/create/?locale=en" data-locale-selector-link>'
-            self.assertIn(expected, response.content.decode())
-
-        else:
-            expected = '<a href="javascript:void(0)" aria-label="French" class="c-dropdown__button u-btn-current w-no-underline">'
-            self.assertContains(response, expected)
-
-            # Check that the other locale link is right
-            expected = """
-            <a href="/admin/modeladmintest/translatablebook/create/?locale=en" aria-label="English" class="u-link is-live w-no-underline">
-                English
-            </a>"""
-            self.assertContains(response, expected, html=True)
+        # Check that the other locale link is right
+        expected = '<a href="/admin/modeladmintest/translatablebook/create/?locale=en" data-locale-selector-link>'
+        self.assertIn(expected, response.content.decode())
 
 
 class TestRevisableCreateView(WagtailTestUtils, TestCase):
@@ -707,14 +694,9 @@ class TestEditView(WagtailTestUtils, TestCase):
         self.assertContains(response, "The Lord of the Rings")
 
         # "Last updated" timestamp should be present
-        if WAGTAIL_VERSION >= (5, 2):
-            self.assertContains(
-                response, 'data-w-tooltip-content-value="Sept. 30, 2021, 10:01 a.m."'
-            )
-        else:
-            self.assertContains(
-                response, 'data-tippy-content="Sept. 30, 2021, 10:01 a.m."'
-            )
+        self.assertContains(
+            response, 'data-w-tooltip-content-value="Sept. 30, 2021, 10:01 a.m."'
+        )
         # History link should be present
         self.assertContains(response, 'href="/admin/modeladmintest/book/history/1/"')
 
@@ -842,20 +824,12 @@ class TestTranslatableBookEditView(WagtailTestUtils, TestCase):
         response = self.get(tbook.id)
         self.assertEqual(response.status_code, 200)
 
-        if WAGTAIL_VERSION >= (5, 1):
-            # Check the locale switcher is there
-            expected = """
-            <a href="/admin/modeladmintest/translatablebook/edit/1/?locale=en" data-locale-selector-link>
-                English
-            </a>"""
-            self.assertContains(response, expected, html=True)
-        else:
-            # Check the locale switcher is there
-            expected = """
-            <a href="/admin/modeladmintest/translatablebook/edit/1/?locale=en" aria-label="English" class="u-link is-live w-no-underline">
-                English
-            </a>"""
-            self.assertContains(response, expected, html=True)
+        # Check the locale switcher is there
+        expected = """
+        <a href="/admin/modeladmintest/translatablebook/edit/1/?locale=en" data-locale-selector-link>
+            English
+        </a>"""
+        self.assertContains(response, expected, html=True)
 
 
 class TestRevisableEditView(WagtailTestUtils, TestCase):
@@ -1123,16 +1097,10 @@ class TestHistoryView(WagtailTestUtils, TestCase):
         response = self.client.get("/admin/modeladmintest/book/history/1/")
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "<td>Created</td>", html=True)
-        if WAGTAIL_VERSION >= (5, 2):
-            self.assertContains(
-                response,
-                'data-w-tooltip-content-value="Sept. 30, 2021, 10:01 a.m."',
-            )
-        else:
-            self.assertContains(
-                response,
-                'data-tippy-content="Sept. 30, 2021, 10:01 a.m."',
-            )
+        self.assertContains(
+            response,
+            'data-w-tooltip-content-value="Sept. 30, 2021, 10:01 a.m."',
+        )
 
 
 class TestQuoting(WagtailTestUtils, TestCase):
