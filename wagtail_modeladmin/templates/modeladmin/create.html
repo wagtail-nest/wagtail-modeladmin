@@ -36,10 +36,10 @@
                 <ul>
                     <li class="actions footer__container">
                         {% block form_actions %}
-                            <div class="dropdown dropup dropdown-button match-width">
+                            {% fragment as default_action_item %}
                                 <button
                                     type="submit"
-                                    class="button action-save button-longrunning"
+                                    class="button action-save button-longrunning w-w-full"
                                     data-controller="w-progress"
                                     data-action="w-progress#activate"
                                     data-w-progress-active-value="{% trans 'Saving…' %}"
@@ -47,7 +47,26 @@
                                     {% icon name="spinner" %}
                                     <em data-w-progress-target="label">{% trans 'Save' %}</em>
                                 </button>
-                            </div>
+                            {% endfragment %}
+
+                            {% fragment as more_action_items %}
+                                {% block more_action_items %}{% endblock %}
+                            {% endfragment %}
+
+                            {% comment %}
+                                HACK:
+                                Strip the fragment to check if the block has been overridden
+                                with non-empty content, similar to {% fragment stripped %} in
+                                Wagtail 6.0, which we can't use without having separate block
+                                names for pre- and post-6.0 versions.
+                            {% endcomment %}
+                            {% if more_action_items.strip %}
+                                {% dropdown_button button=default_action_item toggle_icon="arrow-up" %}
+                                    {{ more_action_items }}
+                                {% enddropdown_button %}
+                            {% else %}
+                                {{ default_action_item }}
+                            {% endif %}
                         {% endblock %}
                     </li>
                 </ul>

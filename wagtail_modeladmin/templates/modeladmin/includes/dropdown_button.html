@@ -1,0 +1,12 @@
+{% load wagtailadmin_tags i18n %}
+
+{% comment "text/markdown" %}
+    A button with a dropdown menu next to it.
+    Legacy implementation fallback for the new
+    "wagtailadmin/shared/dropdown/dropdown_button.html" in Wagtail 6.0+.
+{% endcomment %}
+
+<div class="dropdown dropup dropdown-button match-width">
+    {{ button }}
+    {{ children }}
+</div>

@@ -266,3 +266,12 @@ class RawFormattedFieldNode(BlockInclusionNode):
 
 
 register.tag("rawformattedfield", RawFormattedFieldNode.handle)
+
+if WAGTAIL_VERSION >= (6, 0):
+    pass
+else:
+
+    class DropdownButtonNode(BlockInclusionNode):
+        template = "modeladmin/includes/dropdown_button.html"
+
+    register.tag("dropdown_button", DropdownButtonNode.handle)

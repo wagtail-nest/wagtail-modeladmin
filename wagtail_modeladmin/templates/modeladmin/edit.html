@@ -1,5 +1,5 @@
 {% extends "modeladmin/create.html" %}
-{% load i18n wagtailadmin_tags %}
+{% load i18n wagtailadmin_tags modeladmin_tags %}
 
 {% block header %}
     {% include "modeladmin/includes/header_with_history.html" with title=view.get_page_title subtitle=view.get_page_subtitle icon=view.header_icon merged=1 latest_log_entry=latest_log_entry history_url=history_url %}
@@ -7,25 +7,16 @@
 
 {% block form_action %}{{ view.edit_url }}{% endblock %}
 
-{% block form_actions %}
-    <div class="dropdown dropup dropdown-button match-width">
-        <button
-            type="submit"
-            class="button action-save button-longrunning"
-            data-controller="w-progress"
-            data-action="w-progress#activate"
-            data-w-progress-active-value="{% trans 'Saving…' %}"
-        >
-            {% icon name="spinner" %}
-            <em data-w-progress-target="label">{% trans 'Save' %}</em>
-        </button>
-
-        {% if user_can_delete %}
+{% block more_action_items %}
+    {% wagtail_version 6 0 as wagtail60 %}
+    {% if user_can_delete %}
+        {% if wagtail60 %}
+            <a href="{{ view.delete_url }}" class="button">{% trans "Delete" %}</a>
+        {% else %}
             <div class="dropdown-toggle">{% icon name="arrow-up" %}</div>
             <ul>
                 <li><a href="{{ view.delete_url }}" class="shortcut">{% trans "Delete" %}</a></li>
             </ul>
         {% endif %}
-
-    </div>
+    {% endif %}
 {% endblock %}
