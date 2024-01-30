@@ -5,6 +5,7 @@ from unittest import mock
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core import checks
+from django.templatetags.static import static
 from django.test import TestCase, TransactionTestCase
 from django.test.utils import override_settings
 from django.utils.timezone import make_aware
@@ -329,6 +330,16 @@ class TestAuthorIndexView(WagtailTestUtils, TestCase):
         response = self.get()
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, '<td class="field-name title">J. R. R. Tolkien')
+
+    def test_css_rendered(self):
+        response = self.get()
+        css_url = static("wagtail_modeladmin/css/modeladmin.css")
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            f'<link href="{css_url}" media="all" rel="stylesheet">',
+            html=True,
+        )
 
 
 @override_settings(WAGTAIL_I18N_ENABLED=True)

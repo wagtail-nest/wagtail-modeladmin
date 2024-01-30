@@ -1,0 +1,180 @@
+.modeladmin .result-count {
+  display: block;
+  font-weight: 500;
+}
+
+.modeladmin .result-count:before {
+  content: '(';
+}
+
+.modeladmin .result-count:after {
+  content: ')';
+}
+
+@media screen and (min-width: 75em) {
+  .modeladmin .result-count {
+    display: inline-block;
+    margin-inline-start: 0.25em;
+  }
+}
+
+.modeladmin .result-list {
+  margin-bottom: 0;
+}
+
+.modeladmin .listing td,
+.modeladmin .listing th {
+  vertical-align: top;
+}
+
+.modeladmin .listing thead th.sorted a {
+  color: var(--w-color-text-link-default);
+}
+
+.modeladmin .listing tbody {
+  overflow: auto;
+}
+
+.modeladmin .listing tbody tr:hover ul.actions {
+  visibility: visible;
+}
+
+.modeladmin .listing tbody tr > td {
+  background-color: inherit;
+}
+
+.modeladmin .listing tbody tr > td a.edit-obj {
+  color: inherit;
+  font-weight: 600;
+}
+
+.modeladmin .changelist-filter {
+  padding: 0 15px;
+}
+
+.modeladmin .changelist-filter h2 {
+  background-color: var(--w-color-surface-header);
+  font-size: 13px;
+  line-height: 31px;
+  margin-top: 0;
+  padding-inline-start: 8px;
+  border-bottom: 1px solid var(--w-color-border-furniture);
+}
+
+.modeladmin .changelist-filter h3 {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+.modeladmin .changelist-filter ul {
+  padding-inline-start: 0;
+  margin-bottom: 25px;
+}
+
+.modeladmin .changelist-filter li {
+  list-style-type: none;
+  margin: 0 0 4px;
+  padding-inline-start: 0;
+}
+
+.modeladmin .changelist-filter a {
+  font-family: var(--w-font-sans);
+  border-radius: 3px;
+  width: auto;
+  line-height: 1.2em;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  font-weight: normal;
+  vertical-align: middle;
+  display: block;
+  background-color: var(--w-color-surface-page);
+  border: 1px solid var(--w-color-text-button-outline-default);
+  color: var(--w-color-text-button-outline-default);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  -webkit-font-smoothing: auto;
+  -moz-appearance: none;
+}
+
+.modeladmin .changelist-filter a:hover {
+  background-color: var(--w-color-text-button-outline-default);
+  border-color: var(--w-color-text-button-outline-default);
+  color: var(--w-color-surface-page);
+}
+
+.modeladmin .changelist-filter li.selected a {
+  color: var(--w-color-surface-page) !important;
+  border-color: var(--w-color-text-link-default) !important;
+  background-color: var(--w-color-text-link-default);
+}
+
+.modeladmin .no-search-results {
+  margin-top: 30px;
+}
+
+.modeladmin .no-search-results h2 {
+  padding-top: 0.3em;
+  margin-bottom: 0.3em;
+}
+
+.modeladmin .no-search-results img {
+  float: left;
+  margin: 0 15px 15px 0;
+  width: 50px;
+}
+
+.modeladmin .pagination {
+  margin-top: 3em;
+  border-top: 1px dashed var(--w-color-border-furniture);
+  padding: 2em 1em 0;
+}
+
+.modeladmin .pagination ul {
+  margin-top: -1.25em;
+}
+
+.modeladmin p.no-results {
+  margin: 30px 1em 0;
+}
+
+@media screen and (min-width: 50em) {
+  .modeladmin .changelist-filter {
+    float: right;
+    padding: 0 1.5%;
+  }
+  .modeladmin .result-list {
+    padding: 0 1.5% 0 0;
+  }
+  .modeladmin .result-list.col12 {
+    padding-inline-end: 0;
+  }
+  .modeladmin .result-list.col12 tbody td:last-child {
+    padding-inline-end: 50px;
+  }
+  .modeladmin .result-list tbody th:first-child {
+    padding-inline-start: 50px;
+  }
+  .modeladmin .pagination {
+    padding-inline-start: 50px;
+    padding-inline-end: 50px;
+  }
+  .modeladmin .pagination.col9 {
+    width: 73.5%;
+  }
+  .modeladmin p.no-results {
+    margin: 30px 50px 0;
+  }
+}
+
+@media screen and (min-width: 75em) {
+  .modeladmin .result-list.col9 {
+    width: 79%;
+  }
+  .modeladmin .changelist-filter {
+    width: 21%;
+  }
+  .modeladmin .pagination.col9 {
+    width: 77.5%;
+  }
+}

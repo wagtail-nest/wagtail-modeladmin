@@ -399,7 +399,10 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
     @property
     def media(self):
         return forms.Media(
-            css={"all": self.model_admin.get_index_view_extra_css()},
+            css={
+                "all": self.model_admin.get_index_view_extra_css()
+                + ["wagtail_modeladmin/css/modeladmin.css"]
+            },
             js=self.model_admin.get_index_view_extra_js(),
         )
 
