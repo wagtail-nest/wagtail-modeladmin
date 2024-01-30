@@ -16,9 +16,15 @@ from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.templatetags.wagtailadmin_tags import BlockInclusionNode
 
 register = Library()
+
+
+@register.simple_tag
+def wagtail_version(*version):
+    return WAGTAIL_VERSION >= version
 
 
 def items_for_result(view, result, request):
