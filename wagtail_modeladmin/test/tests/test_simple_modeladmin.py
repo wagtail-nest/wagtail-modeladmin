@@ -456,7 +456,9 @@ class TestCreateView(WagtailTestUtils, TestCase):
         self.assertEqual(initial_book_count, final_book_count)
 
         # Check that a form error was raised
-        self.assertFormError(response, "form", "title", "This field is required.")
+        super(WagtailTestUtils, self).assertFormError(
+            response.context["form"], "title", "This field is required."
+        )
         self.assertContains(response, "error-message", count=1)
 
     def test_exclude_passed_to_extract_panel_definitions(self):
@@ -739,7 +741,9 @@ class TestEditView(WagtailTestUtils, TestCase):
         self.assertEqual(Book.objects.get(id=1).title, "The Lord of the Rings")
 
         # Check that a form error was raised
-        self.assertFormError(response, "form", "title", "This field is required.")
+        super(WagtailTestUtils, self).assertFormError(
+            response.context["form"], "title", "This field is required."
+        )
         self.assertContains(response, "error-message", count=1)
 
     def test_exclude_passed_to_extract_panel_definitions(self):
