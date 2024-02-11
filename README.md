@@ -6,7 +6,7 @@
 
 Add any model in your project to the Wagtail admin. Formerly `wagtail.contrib.modeladmin`.
 
-This package is in maintenance mode and will not receive new features. Consider [migrating to Snippets](https://docs.wagtail.org/en/stable/reference/contrib/modeladmin/migrating_to_snippets.html) and opening new feature requests in the [Wagtail issue tracker](https://github.com/wagtail/wagtail/issues).
+This package is in maintenance mode and will not receive new features. Consider [migrating to Snippets](https://docs.wagtail.org/en/v5.2.3/reference/contrib/modeladmin/migrating_to_snippets.html) and opening new feature requests in the [Wagtail issue tracker](https://github.com/wagtail/wagtail/issues).
 
 ## Links
 
