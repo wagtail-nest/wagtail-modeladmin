@@ -8,6 +8,13 @@ Add any model in your project to the Wagtail admin. Formerly `wagtail.contrib.mo
 
 This package is in maintenance mode and will not receive new features. Consider [migrating to Snippets](https://docs.wagtail.org/en/v5.2.3/reference/contrib/modeladmin/migrating_to_snippets.html) and opening new feature requests in the [Wagtail issue tracker](https://github.com/wagtail/wagtail/issues).
 
+## Join the Community at Wagtail Space!
+
+We'll be at Wagtail Space US this year! The Call for Participation and Registration for both Wagtail Space 2024 events is open. We would love to have you give a talk, or just us as an attendee in June.
+
+* [Wagtail Space NL](https://nl.wagtail.space/), Arnhem, The Netherlands. 2024-06-14
+* [Wagtail Space US](https://us.wagtail.space/), Philadelphia, PA. 2024-06-20 to 2024-06-22
+
 ## Links
 
 - [Documentation](https://wagtail-modeladmin.readthedocs.io)
