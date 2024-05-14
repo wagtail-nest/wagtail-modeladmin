@@ -134,7 +134,7 @@ msgstr "Histórico"
 
 #, python-format
 msgid "%(result_count)s out of %(all_count)s"
-msgstr "%(result_count)s fora de %(all_count)s"
+msgstr "%(result_count)s de %(all_count)s"
 
 #, python-format
 msgid "Sorry, there are no %(name)s matching your search parameters."
