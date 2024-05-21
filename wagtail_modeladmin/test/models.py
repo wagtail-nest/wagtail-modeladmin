@@ -11,6 +11,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     ObjectList,
     TabbedInterface,
+    TitleFieldPanel,
 )
 from wagtail.documents.models import AbstractDocument, Document
 from wagtail.fields import RichTextField
@@ -62,7 +63,7 @@ class SimplePage(Page):
     page_description = "A simple page description"
 
     content_panels = [
-        FieldPanel("title", classname="title"),
+        TitleFieldPanel("title", classname="title"),
         FieldPanel("content"),
     ]
 
@@ -304,7 +305,7 @@ class EventIndex(Page):
         return super().get_cached_paths() + ["/past/"]
 
     content_panels = [
-        FieldPanel("title", classname="title"),
+        TitleFieldPanel("title", classname="title"),
         FieldPanel("intro"),
     ]
 
@@ -357,7 +358,7 @@ class EventPage(Page):
     base_form_class = EventPageForm
 
     content_panels = [
-        FieldPanel("title", classname="title"),
+        TitleFieldPanel("title", classname="title"),
         FieldPanel("date_from"),
         FieldPanel("date_to"),
         FieldPanel("time_from"),
