@@ -177,8 +177,7 @@ from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from .models import MyModel
 
 
-class MyURLHelper(AdminURLHelper):
-    ...
+class MyURLHelper(AdminURLHelper): ...
 
 
 class MyModelAdmin(ModelAdmin):
@@ -215,8 +214,7 @@ from wagtail_modeladmin.options import ModelAdmin, modeladmin_register
 from .models import MyModel
 
 
-class MyPermissionHelper(PermissionHelper):
-    ...
+class MyPermissionHelper(PermissionHelper): ...
 
 
 class MyModelAdmin(ModelAdmin):
@@ -268,14 +266,11 @@ class MyButtonHelper(ButtonHelper):
             "title": _("Add a new %s") % self.verbose_name,
         }
 
-    def inspect_button(self, pk, classnames_add=None, classnames_exclude=None):
-        ...
+    def inspect_button(self, pk, classnames_add=None, classnames_exclude=None): ...
 
-    def edit_button(self, pk, classnames_add=None, classnames_exclude=None):
-        ...
+    def edit_button(self, pk, classnames_add=None, classnames_exclude=None): ...
 
-    def delete_button(self, pk, classnames_add=None, classnames_exclude=None):
-        ...
+    def delete_button(self, pk, classnames_add=None, classnames_exclude=None): ...
 
 
 class MyModelAdmin(ModelAdmin):
