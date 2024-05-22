@@ -375,10 +375,18 @@ class TestChooseParentViewForNonSuperuser(WagtailTestUtils, TestCase):
             Permission.objects.get(codename="access_admin")
         )
         GroupPagePermission.objects.create(
-            group=business_editors, page=business_index, permission_type="add"
+            group=business_editors,
+            page=business_index,
+            permission=Permission.objects.get(
+                content_type__app_label="wagtailcore", codename="add_page"
+            ),
         )
         GroupPagePermission.objects.create(
-            group=business_editors, page=another_business_index, permission_type="add"
+            group=business_editors,
+            page=another_business_index,
+            permission=Permission.objects.get(
+                content_type__app_label="wagtailcore", codename="add_page"
+            ),
         )
 
         user = self.create_user(username="test2", password="password")
