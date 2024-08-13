@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Provisional Wagtail 6.1 support
+- Tox tetsing for Wagtail 6.2
 
 ## [2.0.0] - 2024-02-05
 
