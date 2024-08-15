@@ -43,6 +43,7 @@ class WagtailRegisterable:
     """
 
     add_to_settings_menu = False
+    add_to_reports_menu = False
     add_to_admin_menu = True
     exclude_from_explorer = False
 
@@ -57,6 +58,8 @@ class WagtailRegisterable:
 
         if self.add_to_settings_menu:
             menu_hook = "register_settings_menu_item"
+        elif self.add_to_reports_menu:
+            menu_hook = "register_reports_menu_item"
         elif self.add_to_admin_menu:
             menu_hook = "register_admin_menu_item"
         else:
