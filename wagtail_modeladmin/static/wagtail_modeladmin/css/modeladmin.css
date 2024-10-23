@@ -178,3 +178,9 @@
     width: 77.5%;
   }
 }
+
+.w-header .w-header__description {
+  /* Removed in Wagtail 6.3+ */
+  font-size: 1.125rem;
+  font-weight: 400;
+}
