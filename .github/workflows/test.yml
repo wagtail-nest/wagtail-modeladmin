@@ -27,8 +27,6 @@ jobs:
         with:
           python-version: '3.13'
       - uses: pre-commit/action@v3.0.1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
   test-sqlite:
     runs-on: ubuntu-latest
