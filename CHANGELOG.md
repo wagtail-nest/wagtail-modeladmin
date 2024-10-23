@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [2.1.0] - 2024-10-23
 
 ### Added
 
@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- Drop Python 3.8 from the testing matrix
+- Drop Python 3.8 from the testing matrix. The package can still be installed on Python 3.8 to account for Wagtail 5.2 support, but expect this to change when support for Wagtail 5.2 ends in February 2025.
 
 ## [2.0.0] - 2024-02-05
 
