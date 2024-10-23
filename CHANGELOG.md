@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Wagtail 6.1 and 6.2 support
 - Provisional support for Wagtail 6.3
 - Django 5.1 support
+- Python 3.13 support
 
 ### Removed
 
