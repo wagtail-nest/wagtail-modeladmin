@@ -9,8 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Provisional Wagtail 6.1 support
-- Tox tetsing for Wagtail 6.2
+- Wagtail 6.1 and 6.2 support
+- Provisional support for Wagtail 6.3
+- Django 5.1 support
+
+### Removed
+
+- Drop Python 3.8 from the testing matrix
 
 ## [2.0.0] - 2024-02-05
 

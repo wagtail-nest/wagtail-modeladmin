@@ -23,6 +23,7 @@ classifiers = [
     "Framework :: Django",
     "Framework :: Django :: 4.2",
     "Framework :: Django :: 5.0",
+    "Framework :: Django :: 5.1",
     "Framework :: Wagtail",
     "Framework :: Wagtail :: 5",
     "Framework :: Wagtail :: 6",
@@ -30,7 +31,7 @@ classifiers = [
 dynamic = ["version"]
 requires-python = ">=3.8"
 dependencies = [
-    "Wagtail>=5.2"
+    "Wagtail>=5.2"  # Completely drop Python 3.8 support when we bump this to 6.3
 ]
 [project.optional-dependencies]
 testing = [

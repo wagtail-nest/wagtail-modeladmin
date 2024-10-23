@@ -22,10 +22,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Set up Python 3.8
+      - name: Set up Python 3.13
         uses: actions/setup-python@v5
         with:
-          python-version: '3.8'
+          python-version: '3.13'
       - uses: pre-commit/action@v3.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -35,7 +35,7 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        python: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13']
 
     steps:
       - uses: actions/checkout@v4
@@ -57,12 +57,14 @@ jobs:
     needs: lint
     strategy:
       matrix:
-        python: ['3.8', '3.9', '3.10']
+        python: ['3.9', '3.10']
         include:
           - python: '3.11'
             postgres: '12'
           - python: '3.12'
             postgres: '13'
+          - python: '3.13'
+            postgres: '17'
 
     services:
       postgres:
