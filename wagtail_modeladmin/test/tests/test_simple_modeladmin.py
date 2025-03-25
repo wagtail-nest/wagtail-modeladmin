@@ -1179,7 +1179,7 @@ There are no default tabs on non-Page models so there will be no\
 
         warning_1 = checks.Warning(
             "Publisher.promote_panels will have no effect on modeladmin editing",
-            hint="""Ensure that Publisher uses `panels` instead of `promote_panels`\
+            hint="""Ensure that Publisher uses `panels` instead of `promote_panels` \
 or set up an `edit_handler` if you want a tabbed editing interface.
 There are no default tabs on non-Page models so there will be no\
  Promote tab for the promote_panels to render in.""",
@@ -1189,7 +1189,7 @@ There are no default tabs on non-Page models so there will be no\
 
         warning_2 = checks.Warning(
             "Publisher.settings_panels will have no effect on modeladmin editing",
-            hint="""Ensure that Publisher uses `panels` instead of `settings_panels`\
+            hint="""Ensure that Publisher uses `panels` instead of `settings_panels` \
 or set up an `edit_handler` if you want a tabbed editing interface.
 There are no default tabs on non-Page models so there will be no\
  Settings tab for the settings_panels to render in.""",
