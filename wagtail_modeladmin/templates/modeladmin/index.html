@@ -77,15 +77,31 @@
                     </div>
 
                     {% block pagination %}
-                        <nav class="pagination {% if view.has_filters and all_count %}col9{% else %}col12{% endif %}" aria-label="{% trans 'Pagination' %}">
-                            <p>{% blocktrans trimmed with page_obj.number as current_page and paginator.num_pages as num_pages %}Page {{ current_page }} of {{ num_pages }}.{% endblocktrans %}</p>
-                            {% if paginator.num_pages > 1 %}
-                                <ul>
-                                    {% pagination_link_previous page_obj view %}
-                                    {% pagination_link_next page_obj view %}
-                                </ul>
-                            {% endif %}
+                    <div>
+                        <nav class="pagination" aria-label="{% trans 'Pagination' %}">
+                            <div class="pagination__start">
+                                <p>{% blocktrans trimmed with page_obj.number as page_num and paginator.num_pages as total_pages %}Page {{ page_num }} of {{ total_pages }}{% endblocktrans %}</p>
+                            </div>
+                            <ul>
+                                {% pagination_link_previous page_obj view %}
+                                {% for page_number in elided_page_range %}
+                                    <li class="pagination__page-number{% if page_number == page_obj.number %} pagination__page-number--current{% endif %}">
+                                        {% if page_number == paginator.ELLIPSIS %}
+                                            <span>{{ page_number }}</span>
+                                        {% else %}
+                                            <a href="{{ url_path }}{% querystring p=page_number %}" {% if page_number == items.number %} aria-current="page"{% endif %}>
+                                                {{ page_number|intcomma }}
+                                            </a>
+                                        {% endif %}
+                                    </li>
+                                {% endfor %}
+                                {% pagination_link_next page_obj view %}
+                            </ul>
+                            <div class="pagination__end">
+                                {{ paginator.items_count_label|capfirst }}
+                            </div>
                         </nav>
+                    </div>
                     {% endblock %}
 
                 {% endblock %}
