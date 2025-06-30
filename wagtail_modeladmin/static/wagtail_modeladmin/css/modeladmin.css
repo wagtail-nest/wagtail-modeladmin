@@ -132,6 +132,15 @@
 
 .modeladmin .pagination ul {
   margin-top: -1.25em;
+  display: block;
+}
+
+.modeladmin .pagination ul .prev {
+  float: inline-start;
+}
+
+.modeladmin .pagination ul .next {
+  float: inline-end;
 }
 
 .modeladmin p.no-results {
