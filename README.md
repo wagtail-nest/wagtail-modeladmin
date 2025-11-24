@@ -18,9 +18,9 @@ This package is in maintenance mode and will not receive new features. Consider 
 
 ## Supported versions
 
-- Python 3.9, 3.10, 3.11, 3.12, 3.13
-- Django 4.2, 5.0, 5.1, 5.2
-- Wagtail 6.3, 6.4, 7.0 and 7.1
+- Python 3.10, 3.11, 3.12, 3.13
+- Django 4.2, 5.1, 5.2
+- Wagtail 6.3, 7.0 and 7.2
 
 ## Installation
 
