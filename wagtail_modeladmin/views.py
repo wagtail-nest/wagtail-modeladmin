@@ -711,9 +711,7 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
         except InvalidPage:
             page_obj = paginator.page(1)
 
-        elided_page_range = paginator.get_elided_page_range(
-            self.page_num
-        )
+        elided_page_range = paginator.get_elided_page_range(self.page_num)
 
         context = {
             "view": self,
