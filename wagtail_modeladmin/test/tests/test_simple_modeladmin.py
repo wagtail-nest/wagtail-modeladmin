@@ -460,7 +460,11 @@ class TestCreateView(WagtailTestUtils, TestCase):
         super(WagtailTestUtils, self).assertFormError(
             response.context["form"], "title", "This field is required."
         )
-        self.assertContains(response, "error-message", count=1)
+        # Wagtail 7.2+ includes "error-message" in button data attributes (CSS selectors)
+        # plus the actual error message element, so we expect 3 occurrences
+        # Earlier versions only have the actual error message element (1 occurrence)
+        expected_count = 3 if WAGTAIL_VERSION >= (7, 2) else 1
+        self.assertContains(response, "error-message", count=expected_count)
 
     def test_exclude_passed_to_extract_panel_definitions(self):
         path_to_form_fields_exclude_property = (
@@ -745,7 +749,11 @@ class TestEditView(WagtailTestUtils, TestCase):
         super(WagtailTestUtils, self).assertFormError(
             response.context["form"], "title", "This field is required."
         )
-        self.assertContains(response, "error-message", count=1)
+        # Wagtail 7.2+ includes "error-message" in button data attributes (CSS selectors)
+        # plus the actual error message element, so we expect 3 occurrences
+        # Earlier versions only have the actual error message element (1 occurrence)
+        expected_count = 3 if WAGTAIL_VERSION >= (7, 2) else 1
+        self.assertContains(response, "error-message", count=expected_count)
 
     def test_exclude_passed_to_extract_panel_definitions(self):
         path_to_form_fields_exclude_property = (
