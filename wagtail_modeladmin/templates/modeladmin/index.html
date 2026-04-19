@@ -33,8 +33,7 @@
         {% endfragment %}
         {% fragment as search %}{% block search %}{% search_form %}{% endblock %}{% endfragment %}
         {% fragment as extra_rows %}{% block extra_rows %}{% endblock %}{% endfragment %}
-        {% wagtail_version 6 3 as wagtail63 %}
-        {% fragment as header_template_name %}{% if wagtail63 %}modeladmin/includes/header.html{% else %}wagtailadmin/shared/header.html{% endif %}{% endfragment %}
+        {% fragment as header_template_name %}modeladmin/includes/header.html{% endfragment %}
         {% include header_template_name with classname="w-header--hasform" breadcrumb=breadcrumb heading=heading title=view.get_page_title subtitle=view.get_page_subtitle icon=view.header_icon description=description search=search extra_actions=extra_actions extra_rows=extra_rows %}
     {% endblock %}
 
