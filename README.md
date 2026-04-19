@@ -85,6 +85,6 @@ tox
 ```
 
 or, you can run them for a specific environment `tox -e py314-django60-wagtail73` or specific test
-`tox -e py314-django60-wagtail73-sqlite wagtail-modeladmin.tests.test_file.TestClass.test_method`
+`tox -e py314-django60-wagtail73-sqlite -- wagtail-modeladmin.tests.test_file.TestClass.test_method`
 
 To run the test app interactively, use `tox -e interactive`, visit `http://127.0.0.1:8020/admin/` and log in with `admin`/`changeme`.
