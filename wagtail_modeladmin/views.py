@@ -421,7 +421,9 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
         """
         if not params:
             params = self.params
-        lookup_params = params.copy()  # a dictionary of the query string
+        # .items() may be called on lookup_params, and MultiValueDict.items() does
+        # not preserve values lists, so make this a dict.
+        lookup_params = dict(params.lists())
         # Remove all the parameters that are globally and systematically
         # ignored.
         for ignored in self.IGNORED_PARAMS:

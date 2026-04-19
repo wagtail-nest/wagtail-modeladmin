@@ -45,18 +45,41 @@ class TestIndexView(WagtailTestUtils, TestCase):
 
         self.assertEqual(response.status_code, 200)
 
+        # Multi-valued query parameters are supported as of
+        # https://github.com/django/django/pull/16621
+        # Should return both public and private events
+        self.assertEqual(response.context["result_count"], 4)
+        for eventpage in response.context["object_list"]:
+            self.assertIn(eventpage.audience, ["public", "private"])
+
+    def test_ad_hoc_filter(self):
+        # Filter by location, which is not an option defined in `list_filter`
+        response = self.get(location="Hobart")
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.context["result_count"], 1)
+        for eventpage in response.context["object_list"]:
+            self.assertEqual(eventpage.location, "Hobart")
+
+    def test_ad_hoc_filter_multivalue(self):
+        # Filter by location, which is not an option defined in `list_filter`
+        response = self.get(location=["The North Pole", "Hobart"])
+
+        self.assertEqual(response.status_code, 200)
+
         if DJANGO_VERSION >= (5, 0):
             # Multi-valued query parameters are supported as of
             # https://github.com/django/django/pull/16621
-            # Should return both public and private events
-            self.assertEqual(response.context["result_count"], 4)
+            # Should return both The North Pole and Hobart locations
+            self.assertEqual(response.context["result_count"], 2)
             for eventpage in response.context["object_list"]:
-                self.assertIn(eventpage.audience, ["public", "private"])
+                self.assertIn(eventpage.location, ["The North Pole", "Hobart"])
         else:
-            # Should use the last value, thus only return private events
+            # Should use the last value
             self.assertEqual(response.context["result_count"], 1)
             for eventpage in response.context["object_list"]:
-                self.assertEqual(eventpage.audience, "private")
+                self.assertEqual(eventpage.location, "Hobart")
 
     def test_search(self):
         response = self.get(q="Someone")
