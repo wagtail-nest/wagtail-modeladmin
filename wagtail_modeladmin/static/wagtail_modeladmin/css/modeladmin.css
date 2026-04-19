@@ -125,13 +125,10 @@
 }
 
 .modeladmin .pagination {
+  clear: left;
   margin-top: 3em;
   border-top: 1px dashed var(--w-color-border-furniture);
-  padding: 2em 1em 0;
-}
-
-.modeladmin .pagination ul {
-  margin-top: -1.25em;
+  padding: 3em 1em 0;
 }
 
 .modeladmin p.no-results {

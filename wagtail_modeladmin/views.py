@@ -22,7 +22,7 @@ from django.core.exceptions import (
     PermissionDenied,
     SuspiciousOperation,
 )
-from django.core.paginator import InvalidPage, Paginator
+from django.core.paginator import InvalidPage
 from django.db import models, transaction
 from django.db.models.fields.related import ManyToManyField, OneToOneRel
 from django.shortcuts import get_object_or_404, redirect
@@ -39,6 +39,7 @@ from django.views.generic import TemplateView
 from django.views.generic.edit import FormView
 from django.views.generic.list import MultipleObjectMixin
 from wagtail.admin import messages
+from wagtail.admin.paginator import WagtailPaginator
 from wagtail.admin.ui.tables import Column, DateColumn, Table, UserColumn
 from wagtail.admin.views.generic.base import WagtailAdminTemplateMixin
 from wagtail.admin.views.mixins import SpreadsheetExportMixin
@@ -317,6 +318,8 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
     # add_facets is required by the django.contrib.admin.filters.ListFilter.choices method
     # as of Django 5.0 - see https://github.com/django/django/pull/16495
     add_facets = False
+
+    paginator_class = WagtailPaginator
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -701,12 +704,14 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
         all_count = self.get_base_queryset().count()
         queryset = self.get_queryset()
         result_count = queryset.count()
-        paginator = Paginator(queryset, self.items_per_page)
+        paginator = self.paginator_class(queryset, self.items_per_page)
 
         try:
-            page_obj = paginator.page(self.page_num + 1)
+            page_obj = paginator.page(self.page_num)
         except InvalidPage:
             page_obj = paginator.page(1)
+
+        elided_page_range = paginator.get_elided_page_range(self.page_num)
 
         context = {
             "view": self,
@@ -714,6 +719,7 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
             "result_count": result_count,
             "paginator": paginator,
             "page_obj": page_obj,
+            "elided_page_range": elided_page_range,
             "object_list": page_obj.object_list,
             "user_can_create": self.permission_helper.user_can_create(user),
             "show_search": self.search_handler.show_search_form,

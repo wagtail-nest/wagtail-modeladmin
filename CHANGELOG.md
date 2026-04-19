@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [2.3.0] - [UNRELEASED]
 
-- Drop support for Wagtail 5.2, 6.0, 6.1 and 6.2
+- Drop support for Wagtail 5.2, 6.0, 6.1, 6.2 and 6.3
 
 ## [2.2.0] - 2025-04-25
 

@@ -115,7 +115,8 @@
     "model": "modeladmintest.translatablebook",
     "fields": {
       "title": "The Lord of the Rings",
-      "author_id": 1
+      "author_id": 1,
+      "locale_id": 1
     }
   },
   {
@@ -147,6 +148,7 @@
       "content_type": ["wagtailcore", "page"],
       "path": "0001",
       "url_path": "/",
+      "locale": 1,
       "slug": "root"
     }
   },
@@ -163,6 +165,7 @@
       "depth": 2,
       "content_type": ["wagtailcore", "page"],
       "path": "00010001",
+      "locale": 1,
       "url_path": "/home/",
       "slug": "home"
     }
@@ -180,6 +183,7 @@
       "depth": 3,
       "content_type": ["modeladmintest", "eventindex"],
       "path": "000100010001",
+      "locale": 1,
       "url_path": "/home/events/",
       "slug": "events"
     }
@@ -205,6 +209,7 @@
       "content_type": ["modeladmintest", "eventpage"],
       "path": "0001000100010001",
       "url_path": "/home/events/christmas/",
+      "locale": 1,
       "slug": "christmas"
     }
   },
@@ -229,6 +234,7 @@
       "show_in_menus": true,
       "live": true,
       "depth": 5,
+      "locale": 1,
       "content_type": ["modeladmintest", "venuepage"],
       "path": "00010001000100010001",
       "url_path": "/home/events/christmas/santas-grotto/",
@@ -252,6 +258,7 @@
       "numchild": 0,
       "show_in_menus": true,
       "live": true,
+      "locale": 1,
       "depth": 5,
       "content_type": ["modeladmintest", "venuepage"],
       "path": "00010001000100010002",
@@ -276,6 +283,7 @@
       "numchild": 0,
       "show_in_menus": true,
       "live": true,
+      "locale": 1,
       "depth": 5,
       "content_type": ["wagtailcore", "page"],
       "path": "00010001000100010003",
