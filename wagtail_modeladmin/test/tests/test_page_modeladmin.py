@@ -45,18 +45,12 @@ class TestIndexView(WagtailTestUtils, TestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        if DJANGO_VERSION >= (5, 0):
-            # Multi-valued query parameters are supported as of
-            # https://github.com/django/django/pull/16621
-            # Should return both public and private events
-            self.assertEqual(response.context["result_count"], 4)
-            for eventpage in response.context["object_list"]:
-                self.assertIn(eventpage.audience, ["public", "private"])
-        else:
-            # Should use the last value, thus only return private events
-            self.assertEqual(response.context["result_count"], 1)
-            for eventpage in response.context["object_list"]:
-                self.assertEqual(eventpage.audience, "private")
+        # Multi-valued query parameters are supported as of
+        # https://github.com/django/django/pull/16621
+        # Should return both public and private events
+        self.assertEqual(response.context["result_count"], 4)
+        for eventpage in response.context["object_list"]:
+            self.assertIn(eventpage.audience, ["public", "private"])
 
     def test_ad_hoc_filter(self):
         # Filter by location, which is not an option defined in `list_filter`

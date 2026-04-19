@@ -27,7 +27,6 @@ from django.db import models, transaction
 from django.db.models.fields.related import ManyToManyField, OneToOneRel
 from django.shortcuts import get_object_or_404, redirect
 from django.template.defaultfilters import filesizeformat
-from django.utils.datastructures import MultiValueDict
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_str
 from django.utils.functional import cached_property
@@ -422,12 +421,9 @@ class IndexView(SpreadsheetExportMixin, WMABaseView):
         """
         if not params:
             params = self.params
-        if DJANGO_VERSION >= (5, 0) and isinstance(params, MultiValueDict):
-            # .items() may be called on lookup_params, and MultiValueDict.items() does
-            # not preserve values lists, so make this a dict.
-            lookup_params = dict(params.lists())
-        else:
-            lookup_params = params.copy()  # a dictionary of the query string
+        # .items() may be called on lookup_params, and MultiValueDict.items() does
+        # not preserve values lists, so make this a dict.
+        lookup_params = dict(params.lists())
         # Remove all the parameters that are globally and systematically
         # ignored.
         for ignored in self.IGNORED_PARAMS:
