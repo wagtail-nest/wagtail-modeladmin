@@ -25,6 +25,7 @@ jobs:
       - name: 'On failure, report to #nightly-build-failures in Wagtail Slack'
         if: steps.test.outcome == 'failure'
         run: |
+          python -m pip install --upgrade requests
           python .github/report_nightly_build_failure.py
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
