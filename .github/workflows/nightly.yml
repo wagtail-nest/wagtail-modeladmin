@@ -2,8 +2,8 @@ name: Nightly Wagtail Test
 
 on:
   schedule:
-    - cron: '0 1 * * *'
-    # At 01:00, daily
+    # Run every Monday at midnight
+    - cron: '0 0 * * 1'
   workflow_dispatch:
 
 jobs:
