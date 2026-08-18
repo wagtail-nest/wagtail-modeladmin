@@ -2,7 +2,14 @@ from django.contrib.auth import get_permission_codename
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.utils.functional import cached_property
-from wagtail.models import Page
+from wagtail import VERSION as WAGTAIL_VERSION
+
+if WAGTAIL_VERSION >= (8, 0):
+    import swapper
+
+    Page = swapper.load_model("wagtailcore", "Page")
+else:
+    from wagtail.models import Page
 
 
 class PermissionHelper:

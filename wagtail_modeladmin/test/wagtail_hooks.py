@@ -1,5 +1,5 @@
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
-from wagtail.models import Page
 
 from wagtail_modeladmin.helpers import WagtailBackendSearchHandler
 from wagtail_modeladmin.options import (
@@ -28,6 +28,13 @@ from .models import (
     VenuePage,
     Visitor,
 )
+
+if WAGTAIL_VERSION >= (8, 0):
+    import swapper
+
+    Page = swapper.load_model("wagtailcore", "Page")
+else:
+    from wagtail.models import Page
 
 
 class AuthorModelAdmin(ModelAdmin):
