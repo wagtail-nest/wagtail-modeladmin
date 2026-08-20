@@ -1,9 +1,8 @@
 from django.core.exceptions import ValidationError
-from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from modelcluster.fields import ParentalKey, ParentalManyToManyField
+from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.admin.panels import (
     FieldPanel,
@@ -11,13 +10,23 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     ObjectList,
     TabbedInterface,
-    TitleFieldPanel,
 )
 from wagtail.documents.models import AbstractDocument, Document
-from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition, Image
-from wagtail.models import Orderable, Page, RevisionMixin, TranslatableMixin
+from wagtail.models import Orderable, RevisionMixin, TranslatableMixin
 from wagtail.search import index
+
+if WAGTAIL_VERSION >= (8, 0):
+    import swapper
+
+    swapper.set_app_prefix("wagtailcore", "wagtail")
+    PAGE_MODEL_NAME = swapper.get_model_name("wagtailcore", "Page")
+else:
+    PAGE_MODEL_NAME = "wagtailcore.Page"
+
+
+# The page models are in 'testmodels_default' or 'testmodels_custombasepage' depending on the USE_CUSTOM_PAGE_MODEL setting.
+# Both apps label themselves as 'modeladmintest_pages' so that the rest of the code can refer to them consistently.
 
 # Custom document models to avoid related_name clashes with models from wagtail.test.testapp.models
 
@@ -58,55 +67,10 @@ COMMON_PANELS = (
 )
 
 
-class SimplePage(Page):
-    content = models.TextField()
-    page_description = "A simple page description"
-
-    content_panels = [
-        TitleFieldPanel("title", classname="title"),
-        FieldPanel("content"),
-    ]
-
-    def get_admin_display_title(self):
-        return "%s (simple page)" % super().get_admin_display_title()
-
-
-class BusinessIndex(Page):
-    """Can be placed anywhere, can only have Business children"""
-
-    subpage_types = ["modeladmintest.BusinessChild", "modeladmintest.BusinessSubIndex"]
-
-
-class BusinessSubIndex(Page):
-    """Can be placed under BusinessIndex, and have BusinessChild children"""
-
-    # BusinessNowherePage is 'incorrectly' added here as a possible child.
-    # The rules on BusinessNowherePage prevent it from being a child here though.
-    subpage_types = [
-        "modeladmintest.BusinessChild",
-        "modeladmintest.BusinessNowherePage",
-    ]
-    parent_page_types = ["modeladmintest.BusinessIndex", "modeladmintest.BusinessChild"]
-
-
-class BusinessChild(Page):
-    """Can only be placed under Business indexes, no children allowed"""
-
-    subpage_types = []
-    parent_page_types = ["modeladmintest.BusinessIndex", BusinessSubIndex]
-    page_description = _("A lazy business child page description")
-
-
-class BusinessNowherePage(Page):
-    """Not allowed to be placed anywhere"""
-
-    parent_page_types = []
-
-
 class LinkFields(models.Model):
     link_external = models.URLField("External link", blank=True)
     link_page = models.ForeignKey(
-        "wagtailcore.Page",
+        PAGE_MODEL_NAME,
         null=True,
         blank=True,
         related_name="+",
@@ -165,7 +129,9 @@ class RelatedLink(LinkFields):
     title = models.CharField(
         max_length=255,
     )
-    link = models.ForeignKey(Page, on_delete=models.CASCADE, related_name="+")
+    link = models.ForeignKey(
+        PAGE_MODEL_NAME, on_delete=models.CASCADE, related_name="+"
+    )
 
     panels = [
         MultiFieldPanel(
@@ -180,7 +146,7 @@ class RelatedLink(LinkFields):
 
 class EventPageCarouselItem(TranslatableMixin, Orderable, CarouselItem):
     page = ParentalKey(
-        "modeladmintest.EventPage",
+        "modeladmintest_pages.EventPage",
         related_name="carousel_items",
         on_delete=models.CASCADE,
     )
@@ -191,7 +157,7 @@ class EventPageCarouselItem(TranslatableMixin, Orderable, CarouselItem):
 
 class EventPageRelatedLink(TranslatableMixin, Orderable, RelatedLink):
     page = ParentalKey(
-        "modeladmintest.EventPage",
+        "modeladmintest_pages.EventPage",
         related_name="related_links",
         on_delete=models.CASCADE,
     )
@@ -220,7 +186,7 @@ class EventPageSpeakerAward(TranslatableMixin, Orderable, models.Model):
 
 class EventPageSpeaker(TranslatableMixin, Orderable, LinkFields, ClusterableModel):
     page = ParentalKey(
-        "modeladmintest.EventPage",
+        "modeladmintest_pages.EventPage",
         related_name="speakers",
         related_query_name="speaker",
         on_delete=models.CASCADE,
@@ -258,58 +224,6 @@ class EventCategory(TranslatableMixin, models.Model):
         return self.name
 
 
-class EventIndex(Page):
-    intro = RichTextField(blank=True, max_length=50)
-    ajax_template = "tests/includes/event_listing.html"
-
-    def get_events(self):
-        return self.get_children().live().type(EventPage)
-
-    def get_paginator(self):
-        return Paginator(self.get_events(), 4)
-
-    def get_context(self, request, page=1):
-        # Pagination
-        paginator = self.get_paginator()
-        try:
-            events = paginator.page(page)
-        except PageNotAnInteger:
-            events = paginator.page(1)
-        except EmptyPage:
-            events = paginator.page(paginator.num_pages)
-
-        # Update context
-        context = super().get_context(request)
-        context["events"] = events
-        return context
-
-    def route(self, request, path_components):
-        if self.live and len(path_components) == 1:
-            try:
-                return self.serve(request, page=int(path_components[0]))
-            except (TypeError, ValueError):
-                pass
-
-        return super().route(request, path_components)
-
-    def get_sitemap_urls(self, request=None):
-        # Add past events url to sitemap
-        return super().get_sitemap_urls(request=request) + [
-            {
-                "location": self.full_url + "past/",
-                "lastmod": self.latest_revision_created_at,
-            }
-        ]
-
-    def get_cached_paths(self):
-        return super().get_cached_paths() + ["/past/"]
-
-    content_panels = [
-        TitleFieldPanel("title", classname="title"),
-        FieldPanel("intro"),
-    ]
-
-
 class EventPageForm(WagtailAdminPageForm):
     def clean(self):
         cleaned_data = super().clean()
@@ -323,115 +237,14 @@ class EventPageForm(WagtailAdminPageForm):
         return cleaned_data
 
 
-class EventPage(Page):
-    date_from = models.DateField("Start date", null=True)
-    date_to = models.DateField(
-        "End date",
-        null=True,
-        blank=True,
-        help_text="Not required if event is on a single day",
-    )
-    time_from = models.TimeField("Start time", null=True, blank=True)
-    time_to = models.TimeField("End time", null=True, blank=True)
-    audience = models.CharField(max_length=255, choices=EVENT_AUDIENCE_CHOICES)
-    location = models.CharField(max_length=255)
-    body = RichTextField(blank=True)
-    cost = models.CharField(max_length=255)
-    signup_link = models.URLField(blank=True)
-    feed_image = models.ForeignKey(
-        "modeladmintest.CustomImage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-    categories = ParentalManyToManyField(EventCategory, blank=True)
-
-    search_fields = Page.search_fields + [
-        index.SearchField("get_audience_display"),
-        index.SearchField("location"),
-        index.SearchField("body"),
-        index.FilterField("url_path"),
-    ]
-
-    password_required_template = "tests/event_page_password_required.html"
-    base_form_class = EventPageForm
-
-    content_panels = [
-        TitleFieldPanel("title", classname="title"),
-        FieldPanel("date_from"),
-        FieldPanel("date_to"),
-        FieldPanel("time_from"),
-        FieldPanel("time_to"),
-        FieldPanel("location"),
-        FieldPanel("audience", help_text="Who this event is for"),
-        FieldPanel("cost"),
-        FieldPanel("signup_link"),
-        InlinePanel("carousel_items", label="Carousel items"),
-        FieldPanel("body"),
-        InlinePanel(
-            "speakers",
-            label="Speakers",
-            heading="Speaker lineup",
-            help_text="Put the keynote speaker first",
-        ),
-        InlinePanel("related_links", label="Related links"),
-        FieldPanel("categories"),
-        # InlinePanel related model uses `pk` not `id`
-        InlinePanel("head_counts", label="Head Counts"),
-    ]
-
-    promote_panels = [
-        MultiFieldPanel(
-            COMMON_PANELS, "Common page configuration", help_text="For SEO nerds only"
-        ),
-        FieldPanel("feed_image"),
-    ]
-
-    class Meta:
-        permissions = [
-            ("custom_see_panel_setting", "Can see the panel."),
-            ("other_custom_see_panel_setting", "Can see the panel."),
-        ]
-
-
-class SingleEventPage(EventPage):
-    excerpt = models.TextField(
-        max_length=255,
-        blank=True,
-        null=True,
-        help_text="Short text to describe what is this action about",
-    )
-
-    # Give this page model a custom URL routing scheme
-    def get_url_parts(self, request=None):
-        url_parts = super().get_url_parts(request=request)
-        if url_parts is None:
-            return None
-        else:
-            site_id, root_url, page_path = url_parts
-            return (site_id, root_url, page_path + "pointless-suffix/")
-
-    def route(self, request, path_components):
-        if path_components == ["pointless-suffix"]:
-            # treat this as equivalent to a request for this page
-            return super().route(request, [])
-        else:
-            # fall back to default routing rules
-            return super().route(request, path_components)
-
-    def get_admin_display_title(self):
-        return "%s (single event)" % super().get_admin_display_title()
-
-    content_panels = [FieldPanel("excerpt")] + EventPage.content_panels
-
-
 class HeadCountRelatedModelUsingPK(models.Model):
     """Related model that uses a custom primary key (pk) not id"""
 
     custom_id = models.AutoField(primary_key=True)
     event_page = ParentalKey(
-        EventPage, on_delete=models.CASCADE, related_name="head_counts"
+        "modeladmintest_pages.EventPage",
+        on_delete=models.CASCADE,
+        related_name="head_counts",
     )
     head_count = models.IntegerField()
     panels = [FieldPanel("head_count")]
@@ -521,11 +334,6 @@ class Publisher(RevisionMixin, models.Model):
 
     def __str__(self):
         return self.name
-
-
-class VenuePage(Page):
-    address = models.CharField(max_length=300)
-    capacity = models.IntegerField()
 
 
 class Visitor(models.Model):
