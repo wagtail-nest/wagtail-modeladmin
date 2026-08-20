@@ -1,10 +1,11 @@
 import datetime
-from io import BytesIO
+from io import BytesIO, StringIO
 from unittest import mock
 
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core import checks
+from django.core.management import call_command
 from django.templatetags.static import static
 from django.test import TestCase, TransactionTestCase
 from django.test.utils import override_settings
@@ -239,6 +240,10 @@ class TestBookIndexViewSearch(WagtailTestUtils, TransactionTestCase):
 
     def setUp(self):
         self.login()
+
+        # Search index needs to be updated after fixture loading to ensure
+        # correct search results
+        call_command("update_index", stdout=StringIO())
 
         img = CustomImage.objects.create(
             title="LOTR cover",
