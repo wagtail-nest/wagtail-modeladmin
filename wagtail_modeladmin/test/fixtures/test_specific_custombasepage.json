@@ -34,15 +34,15 @@
   },
   {
     "pk": 1,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Root",
       "draft_title": "Root",
       "numchild": 1,
-      "show_in_menus": false,
+
       "live": true,
       "depth": 1,
-      "content_type": ["wagtailcore", "page"],
+      "content_type": ["basepage", "basepage"],
       "path": "0001",
       "url_path": "/",
       "locale": 1,
@@ -52,15 +52,15 @@
 
   {
     "pk": 2,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Welcome to the Wagtail test site!",
       "draft_title": "Welcome to the Wagtail test site!",
       "numchild": 5,
-      "show_in_menus": false,
+
       "live": true,
       "depth": 2,
-      "content_type": ["wagtailcore", "page"],
+      "content_type": ["basepage", "basepage"],
       "path": "00010001",
       "url_path": "/home/",
       "locale": 1,
@@ -70,12 +70,12 @@
 
   {
     "pk": 3,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Events",
       "draft_title": "Events",
       "numchild": 4,
-      "show_in_menus": true,
+
       "live": true,
       "depth": 3,
       "content_type": ["modeladmintest_pages", "eventindex"],
@@ -95,12 +95,12 @@
 
   {
     "pk": 4,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Christmas",
       "draft_title": "Christmas",
       "numchild": 0,
-      "show_in_menus": true,
+
       "live": true,
       "depth": 4,
       "content_type": ["modeladmintest_pages", "eventpage"],
@@ -138,12 +138,12 @@
 
   {
     "pk": 5,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Tentative Unpublished Event",
       "draft_title": "Tentative Unpublished Event",
       "numchild": 0,
-      "show_in_menus": true,
+
       "live": false,
       "depth": 4,
       "content_type": ["modeladmintest_pages", "eventpage"],
@@ -168,12 +168,12 @@
 
   {
     "pk": 6,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Someone Else's Event",
       "draft_title": "Someone Else's Event",
       "numchild": 0,
-      "show_in_menus": true,
+
       "live": false,
       "depth": 4,
       "content_type": ["modeladmintest_pages", "eventpage"],
@@ -198,12 +198,12 @@
 
   {
     "pk": 7,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "About us",
       "draft_title": "About us",
       "numchild": 0,
-      "show_in_menus": true,
+
       "live": true,
       "depth": 3,
       "content_type": ["modeladmintest_pages", "simplepage"],
@@ -223,12 +223,12 @@
 
   {
     "pk": 11,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Other events",
       "draft_title": "Other events",
       "numchild": 1,
-      "show_in_menus": true,
+
       "live": true,
       "depth": 3,
       "content_type": ["modeladmintest_pages", "simplepage"],
@@ -248,12 +248,12 @@
 
   {
     "pk": 12,
-    "model": "wagtailcore.page",
+    "model": "basepage.basepage",
     "fields": {
       "title": "Special event",
       "draft_title": "Special event",
       "numchild": 0,
-      "show_in_menus": false,
+
       "live": true,
       "depth": 4,
       "content_type": ["modeladmintest_pages", "eventpage"],

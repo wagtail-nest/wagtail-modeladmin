@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/stable/ref/settings/
 import os
 
 import dj_database_url
+from wagtail import VERSION as WAGTAIL_VERSION
 
 # Build paths inside the project like this: os.path.join(PROJECT_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -168,3 +169,13 @@ WAGTAIL_CONTENT_LANGUAGES = [
     ("en", ("English")),
     ("fr", ("French")),
 ]
+
+if os.environ.get("USE_CUSTOM_PAGE_MODEL") and WAGTAIL_VERSION >= (8, 0):
+    USE_CUSTOM_PAGE_MODEL = True
+    INSTALLED_APPS.insert(2, "wagtail_modeladmin.test.basepage")
+    INSTALLED_APPS.insert(2, "wagtail_modeladmin.test.testmodels_custombasepage")
+    WAGTAIL_PAGE_MODEL = "basepage.BasePage"
+    print("Custom base page model active")  # noqa: T201
+else:
+    USE_CUSTOM_PAGE_MODEL = False
+    INSTALLED_APPS.append("wagtail_modeladmin.test.testmodels_default")

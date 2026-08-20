@@ -2,7 +2,14 @@ from django.contrib.auth import get_permission_codename
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.utils.functional import cached_property
-from wagtail.models import Page
+from wagtail import VERSION as WAGTAIL_VERSION
+
+if WAGTAIL_VERSION >= (8, 0):
+    import swapper
+
+    Page = swapper.load_model("wagtailcore", "Page")
+else:
+    from wagtail.models import Page
 
 
 class PermissionHelper:
@@ -139,7 +146,8 @@ class PagePermissionHelper(PermissionHelper):
             perms = {
                 perm
                 for perm in PagePermissionPolicy().get_cached_permissions_for_user(user)
-                if perm.permission.codename == "add_page"
+                if perm.permission.codename
+                == get_permission_codename("add", Page._meta)
             }
 
             for perm in perms:

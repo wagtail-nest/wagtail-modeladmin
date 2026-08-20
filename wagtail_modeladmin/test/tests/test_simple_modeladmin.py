@@ -24,6 +24,7 @@ from wagtail.models import Locale, ModelLogEntry, Page
 from wagtail.test.utils import WagtailTestUtils
 
 from wagtail_modeladmin.helpers.search import DjangoORMSearchHandler
+from wagtail_modeladmin.test.fixtures import FIXTURE_MODELADMINTEST
 from wagtail_modeladmin.test.models import (
     Author,
     Book,
@@ -36,9 +37,16 @@ from wagtail_modeladmin.test.models import (
 )
 from wagtail_modeladmin.test.wagtail_hooks import BookModelAdmin, EventsAdminGroup
 
+if WAGTAIL_VERSION >= (8, 0):
+    import swapper
+
+    Page = swapper.load_model("wagtailcore", "Page")
+else:
+    from wagtail.models import Page
+
 
 class TestBookIndexView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -236,7 +244,7 @@ class TestBookIndexView(WagtailTestUtils, TestCase):
 
 
 class TestBookIndexViewSearch(WagtailTestUtils, TransactionTestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -271,7 +279,7 @@ class TestBookIndexViewSearch(WagtailTestUtils, TransactionTestCase):
 
 
 class TestAuthorIndexView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -353,7 +361,7 @@ class TestAuthorIndexView(WagtailTestUtils, TestCase):
 
 @override_settings(WAGTAIL_I18N_ENABLED=True)
 class TestTranslatableBookIndexView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -405,7 +413,7 @@ class TestTranslatableBookIndexView(WagtailTestUtils, TestCase):
 
 
 class TestCreateView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -529,7 +537,7 @@ class TestCreateView(WagtailTestUtils, TestCase):
 
 @override_settings(WAGTAIL_I18N_ENABLED=True)
 class TestTranslatableCreateView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -584,7 +592,7 @@ class TestRevisableCreateView(WagtailTestUtils, TestCase):
 
 
 class TestInspectView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -679,7 +687,7 @@ class TestInspectView(WagtailTestUtils, TestCase):
 
 
 class TestEditView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.user = self.login()
@@ -818,7 +826,7 @@ class TestEditView(WagtailTestUtils, TestCase):
 
 @override_settings(WAGTAIL_I18N_ENABLED=True)
 class TestTranslatableBookEditView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -884,7 +892,7 @@ class TestRevisableEditView(WagtailTestUtils, TestCase):
 
 
 class TestPageSpecificViews(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
     expected_status_code = 404
 
     def setUp(self):
@@ -896,7 +904,7 @@ class TestPageSpecificViews(WagtailTestUtils, TestCase):
 
 
 class TestConfirmDeleteView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -928,7 +936,7 @@ class TestConfirmDeleteView(WagtailTestUtils, TestCase):
 
 
 class TestDeleteViewWithProtectedRelation(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -986,7 +994,7 @@ class TestDeleteViewWithProtectedRelation(WagtailTestUtils, TestCase):
 
 
 class TestDeleteViewModelReprPrimary(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -997,7 +1005,7 @@ class TestDeleteViewModelReprPrimary(WagtailTestUtils, TestCase):
 
 
 class TestEditorAccess(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         # Create a user
@@ -1099,7 +1107,7 @@ class TestEditorAccess(WagtailTestUtils, TestCase):
 
 
 class TestHistoryView(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
@@ -1122,7 +1130,7 @@ class TestHistoryView(WagtailTestUtils, TestCase):
 
 
 class TestQuoting(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
     expected_status_code = 200
 
     def setUp(self):
@@ -1233,7 +1241,7 @@ There are no default tabs on non-Page models so there will be no\
 
 
 class TestMenuSetting(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()

@@ -1,5 +1,6 @@
+from django.conf import settings
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin.panels import FieldPanel, ObjectList, TabbedInterface
-from wagtail.models import Page
 
 from wagtail_modeladmin.helpers import WagtailBackendSearchHandler
 from wagtail_modeladmin.options import (
@@ -14,20 +15,38 @@ from .forms import PublisherModelAdminForm
 from .models import (
     Author,
     Book,
-    BusinessChild,
     Contributor,
     Enemy,
-    EventPage,
     Friend,
     Person,
     Publisher,
     RelatedLink,
-    SingleEventPage,
     Token,
     TranslatableBook,
-    VenuePage,
     Visitor,
 )
+
+if WAGTAIL_VERSION >= (8, 0):
+    import swapper
+
+    Page = swapper.load_model("wagtailcore", "Page")
+else:
+    from wagtail.models import Page
+
+if settings.USE_CUSTOM_PAGE_MODEL:
+    from wagtail_modeladmin.test.testmodels_custombasepage.models import (
+        BusinessChild,
+        EventPage,
+        SingleEventPage,
+        VenuePage,
+    )
+else:
+    from wagtail_modeladmin.test.testmodels_default.models import (
+        BusinessChild,
+        EventPage,
+        SingleEventPage,
+        VenuePage,
+    )
 
 
 class AuthorModelAdmin(ModelAdmin):

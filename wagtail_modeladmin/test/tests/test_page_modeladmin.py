@@ -1,20 +1,58 @@
 from django import VERSION as DJANGO_VERSION
+from django.conf import settings
 from django.contrib.auth.models import Group, Permission
 from django.test import TestCase
+from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.models import GroupPagePermission, Page
 from wagtail.test.utils import WagtailTestUtils
 
-from wagtail_modeladmin.test.models import BusinessIndex, EventCategory, EventPage
+from wagtail_modeladmin.test.fixtures import (
+    FIXTURE_MODELADMINTEST,
+    FIXTURE_TEST_SPECIFIC,
+)
+from wagtail_modeladmin.test.models import (
+    EventCategory,
+)
+
+if WAGTAIL_VERSION >= (8, 0):
+    import swapper
+
+    Page = swapper.load_model("wagtailcore", "Page")
+else:
+    from wagtail.models import Page
+
+
+if settings.USE_CUSTOM_PAGE_MODEL:
+    from wagtail_modeladmin.test.testmodels_custombasepage.models import (
+        BusinessIndex,
+        EventPage,
+    )
+else:
+    from wagtail_modeladmin.test.testmodels_default.models import (
+        BusinessIndex,
+        EventPage,
+    )
+
+
+def get_basepage_add_permission():
+    if settings.USE_CUSTOM_PAGE_MODEL:
+        return Permission.objects.get(
+            content_type__app_label="basepage", codename="add_basepage"
+        )
+    else:
+        return Permission.objects.get(
+            content_type__app_label="wagtailcore", codename="add_page"
+        )
 
 
 class TestIndexView(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         self.login()
 
     def get(self, **params):
-        return self.client.get("/admin/modeladmintest/eventpage/", params)
+        return self.client.get("/admin/modeladmintest_pages/eventpage/", params)
 
     def test_simple(self):
         response = self.get()
@@ -98,8 +136,12 @@ class TestIndexView(WagtailTestUtils, TestCase):
         self.assertEqual(response.context["result_count"], 4)
 
     def test_using_core_page(self):
+        if settings.USE_CUSTOM_PAGE_MODEL:
+            url = "/admin/basepage/basepage/"
+        else:
+            url = "/admin/wagtailcore/page/"
         # The core page is slightly different to other pages, so exclude it
-        response = self.client.get("/admin/wagtailcore/page/")
+        response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
 
         root_page = Page.objects.get(depth=1)
@@ -109,35 +151,35 @@ class TestIndexView(WagtailTestUtils, TestCase):
         response = self.get()
         self.assertContains(
             response,
-            '<a href="/admin/modeladmintest/eventpage/inspect/12/" class="button button-secondary button-small" title="Inspect this event page">Inspect</a>',
+            '<a href="/admin/modeladmintest_pages/eventpage/inspect/12/" class="button button-secondary button-small" title="Inspect this event page">Inspect</a>',
         )
         self.assertContains(
             response,
-            '<a href="/admin/pages/12/edit/?next=/admin/modeladmintest/eventpage/" class="button button-secondary button-small" title="Edit this event page">Edit</a>',
+            '<a href="/admin/pages/12/edit/?next=/admin/modeladmintest_pages/eventpage/" class="button button-secondary button-small" title="Edit this event page">Edit</a>',
         )
         self.assertContains(
             response,
-            '<a href="/admin/pages/12/copy/?next=/admin/modeladmintest/eventpage/" class="button button-small" title="Copy this event page">Copy</a>',
+            '<a href="/admin/pages/12/copy/?next=/admin/modeladmintest_pages/eventpage/" class="button button-small" title="Copy this event page">Copy</a>',
         )
         self.assertContains(
             response,
-            '<a href="/admin/pages/12/unpublish/?next=/admin/modeladmintest/eventpage/" class="button button-small" title="Unpublish this event page">Unpublish</a>',
+            '<a href="/admin/pages/12/unpublish/?next=/admin/modeladmintest_pages/eventpage/" class="button button-small" title="Unpublish this event page">Unpublish</a>',
         )
         self.assertContains(
             response,
-            '<a href="/admin/pages/12/delete/?next=/admin/modeladmintest/eventpage/" class="button no button-small" title="Delete this event page">Delete</a>',
+            '<a href="/admin/pages/12/delete/?next=/admin/modeladmintest_pages/eventpage/" class="button no button-small" title="Delete this event page">Delete</a>',
         )
 
 
 class TestExcludeFromExplorer(WagtailTestUtils, TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
 
     def test_attribute_effects_explorer(self):
         # The two VenuePages should appear in the venuepage list
-        response = self.client.get("/admin/modeladmintest/venuepage/")
+        response = self.client.get("/admin/modeladmintest_pages/venuepage/")
         self.assertContains(response, "Santa&#x27;s Grotto")
         self.assertContains(response, "Santa&#x27;s Workshop")
 
@@ -151,15 +193,17 @@ class TestExcludeFromExplorer(WagtailTestUtils, TestCase):
 
 
 class TestCreateView(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         self.login()
 
     def test_redirect_to_choose_parent(self):
         # When more than one possible parent page exists, redirect to choose_parent
-        response = self.client.get("/admin/modeladmintest/eventpage/create/")
-        self.assertRedirects(response, "/admin/modeladmintest/eventpage/choose_parent/")
+        response = self.client.get("/admin/modeladmintest_pages/eventpage/create/")
+        self.assertRedirects(
+            response, "/admin/modeladmintest_pages/eventpage/choose_parent/"
+        )
 
     def test_one_parent_exists(self):
         # Create a BusinessIndex page that BusinessChild can exist under
@@ -168,25 +212,26 @@ class TestCreateView(WagtailTestUtils, TestCase):
         homepage.add_child(instance=business_index)
 
         # When one possible parent page exists, redirect straight to the page create view
-        response = self.client.get("/admin/modeladmintest/businesschild/create/")
+        response = self.client.get("/admin/modeladmintest_pages/businesschild/create/")
 
         expected_path = (
-            "/admin/pages/add/modeladmintest/businesschild/%d/" % business_index.pk
+            "/admin/pages/add/modeladmintest_pages/businesschild/%d/"
+            % business_index.pk
         )
-        expected_next_path = "/admin/modeladmintest/businesschild/"
+        expected_next_path = "/admin/modeladmintest_pages/businesschild/"
         self.assertRedirects(
             response, "%s?next=%s" % (expected_path, expected_next_path)
         )
 
 
 class TestInspectView(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json", "modeladmintest_test.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC, FIXTURE_MODELADMINTEST]
 
     def setUp(self):
         self.login()
 
     def get(self, id):
-        return self.client.get("/admin/modeladmintest/eventpage/inspect/%d/" % id)
+        return self.client.get("/admin/modeladmintest_pages/eventpage/inspect/%d/" % id)
 
     def test_simple(self):
         response = self.get(4)
@@ -261,19 +306,21 @@ class TestInspectView(WagtailTestUtils, TestCase):
 
 
 class TestEditView(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         self.login()
 
     def get(self, obj_id):
-        return self.client.get("/admin/modeladmintest/eventpage/edit/%d/" % obj_id)
+        return self.client.get(
+            "/admin/modeladmintest_pages/eventpage/edit/%d/" % obj_id
+        )
 
     def test_simple(self):
         response = self.get(4)
 
         expected_path = "/admin/pages/4/edit/"
-        expected_next_path = "/admin/modeladmintest/eventpage/"
+        expected_next_path = "/admin/modeladmintest_pages/eventpage/"
         self.assertRedirects(
             response, "%s?next=%s" % (expected_path, expected_next_path)
         )
@@ -291,60 +338,68 @@ class TestEditView(WagtailTestUtils, TestCase):
 
 
 class TestDeleteView(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         self.login()
 
     def get(self, obj_id):
-        return self.client.get("/admin/modeladmintest/eventpage/delete/%d/" % obj_id)
+        return self.client.get(
+            "/admin/modeladmintest_pages/eventpage/delete/%d/" % obj_id
+        )
 
     def test_simple(self):
         response = self.get(4)
 
         expected_path = "/admin/pages/4/delete/"
-        expected_next_path = "/admin/modeladmintest/eventpage/"
+        expected_next_path = "/admin/modeladmintest_pages/eventpage/"
         self.assertRedirects(
             response, "%s?next=%s" % (expected_path, expected_next_path)
         )
 
 
 class TestChooseParentView(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         self.login()
 
     def test_simple(self):
-        response = self.client.get("/admin/modeladmintest/eventpage/choose_parent/")
+        response = self.client.get(
+            "/admin/modeladmintest_pages/eventpage/choose_parent/"
+        )
 
         self.assertEqual(response.status_code, 200)
 
     def test_no_parent_exists(self):
-        response = self.client.get("/admin/modeladmintest/businesschild/choose_parent/")
+        response = self.client.get(
+            "/admin/modeladmintest_pages/businesschild/choose_parent/"
+        )
 
         self.assertRedirects(response, "/admin/")
 
     def test_post(self):
         response = self.client.post(
-            "/admin/modeladmintest/eventpage/choose_parent/",
+            "/admin/modeladmintest_pages/eventpage/choose_parent/",
             {
                 "parent_page": 2,
             },
         )
 
-        expected_path = "/admin/pages/add/modeladmintest/eventpage/2/"
-        expected_next_path = "/admin/modeladmintest/eventpage/"
+        expected_path = "/admin/pages/add/modeladmintest_pages/eventpage/2/"
+        expected_next_path = "/admin/modeladmintest_pages/eventpage/"
         self.assertRedirects(
             response, "%s?next=%s" % (expected_path, expected_next_path)
         )
 
     def test_back_to_listing(self):
-        response = self.client.post("/admin/modeladmintest/eventpage/choose_parent/")
+        response = self.client.post(
+            "/admin/modeladmintest_pages/eventpage/choose_parent/"
+        )
         # check that back to listing link exists
         expected = """
             <p class="back">
-                    <a href="/admin/modeladmintest/eventpage/">
+                    <a href="/admin/modeladmintest_pages/eventpage/">
                         <svg class="icon icon-arrow-left default" aria-hidden="true">
                             <use href="#icon-arrow-left"></use>
                         </svg>
@@ -361,7 +416,9 @@ class TestChooseParentView(WagtailTestUtils, TestCase):
         )
         homepage.add_child(instance=business_index)
 
-        response = self.client.get("/admin/modeladmintest/businesschild/choose_parent/")
+        response = self.client.get(
+            "/admin/modeladmintest_pages/businesschild/choose_parent/"
+        )
 
         self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, "Title with <script>alert('XSS')</script>")
@@ -371,7 +428,7 @@ class TestChooseParentView(WagtailTestUtils, TestCase):
 
 
 class TestChooseParentViewForNonSuperuser(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         homepage = Page.objects.get(url_path="/home/")
@@ -400,16 +457,12 @@ class TestChooseParentViewForNonSuperuser(WagtailTestUtils, TestCase):
         GroupPagePermission.objects.create(
             group=business_editors,
             page=business_index,
-            permission=Permission.objects.get(
-                content_type__app_label="wagtailcore", codename="add_page"
-            ),
+            permission=get_basepage_add_permission(),
         )
         GroupPagePermission.objects.create(
             group=business_editors,
             page=another_business_index,
-            permission=Permission.objects.get(
-                content_type__app_label="wagtailcore", codename="add_page"
-            ),
+            permission=get_basepage_add_permission(),
         )
 
         user = self.create_user(username="test2", password="password")
@@ -418,15 +471,16 @@ class TestChooseParentViewForNonSuperuser(WagtailTestUtils, TestCase):
         self.login(username="test2", password="password")
 
     def test_simple(self):
-        response = self.client.get("/admin/modeladmintest/businesschild/choose_parent/")
-
+        response = self.client.get(
+            "/admin/modeladmintest_pages/businesschild/choose_parent/"
+        )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Public Business Index")
         self.assertNotContains(response, "Private Business Index")
 
 
 class TestEditorAccess(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         # Create a user
@@ -436,12 +490,12 @@ class TestEditorAccess(WagtailTestUtils, TestCase):
         self.login(username="test2", password="password")
 
     def test_delete_permitted(self):
-        response = self.client.get("/admin/modeladmintest/eventpage/delete/4/")
+        response = self.client.get("/admin/modeladmintest_pages/eventpage/delete/4/")
         self.assertRedirects(response, "/admin/")
 
 
 class TestModeratorAccess(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         # Create a user
@@ -451,14 +505,15 @@ class TestModeratorAccess(WagtailTestUtils, TestCase):
         self.login(username="test3", password="password")
 
     def test_delete_permitted(self):
-        response = self.client.get("/admin/modeladmintest/eventpage/delete/4/")
+        response = self.client.get("/admin/modeladmintest_pages/eventpage/delete/4/")
         self.assertRedirects(
-            response, "/admin/pages/4/delete/?next=/admin/modeladmintest/eventpage/"
+            response,
+            "/admin/pages/4/delete/?next=/admin/modeladmintest_pages/eventpage/",
         )
 
 
 class TestSearch(WagtailTestUtils, TestCase):
-    fixtures = ["test_specific.json"]
+    fixtures = [FIXTURE_TEST_SPECIFIC]
 
     def setUp(self):
         self.login()
@@ -466,7 +521,7 @@ class TestSearch(WagtailTestUtils, TestCase):
     def test_lookup_allowed_on_parentalkey(self):
         try:
             self.client.get(
-                "/admin/modeladmintest/eventpage/?related_links__link_page__id__exact=1"
+                "/admin/modeladmintest_pages/eventpage/?related_links__link_page__id__exact=1"
             )
         except AttributeError:
             self.fail("Lookup on parentalkey raised AttributeError unexpectedly")
