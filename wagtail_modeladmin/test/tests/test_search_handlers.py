@@ -6,6 +6,7 @@ from wagtail_modeladmin.helpers import (
     DjangoORMSearchHandler,
     WagtailBackendSearchHandler,
 )
+from wagtail_modeladmin.test.fixtures import FIXTURE_MODELADMINTEST
 from wagtail_modeladmin.test.models import Book
 
 
@@ -30,7 +31,7 @@ class FakeSearchBackend:
 
 
 class TestORMSearchHandler(TestCase):
-    fixtures = ["modeladmintest_test.json"]
+    fixtures = [FIXTURE_MODELADMINTEST]
 
     def get_search_handler(self, search_fields=None):
         return DjangoORMSearchHandler(search_fields)
