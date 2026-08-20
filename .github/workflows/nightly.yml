@@ -21,7 +21,7 @@ jobs:
         id: test
         continue-on-error: true
         run: |
-          tox -e future
+          tox -e future,future-custombasepage
       - name: 'On failure, report to #nightly-build-failures in Wagtail Slack'
         if: steps.test.outcome == 'failure'
         run: |
